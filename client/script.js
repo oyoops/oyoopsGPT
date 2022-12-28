@@ -86,7 +86,10 @@ const handleSubmit = async (e) => {
 
   // fetch data from server
 
-  const response = await fetch('http://localhost:5000', {
+  // FOR LOCAL INSTANCE:
+  // const response = await fetch('http://localhost:5000/', {
+  // FOR WEB INSTANCE:
+  const response = await fetch('https://oyoopsgpt.onrender.com/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
