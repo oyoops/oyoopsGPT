@@ -42,7 +42,7 @@ function generateUniqueId() {
   const timestamp = Date.now();
   const randomNumber = Math.random();
   const hexadecimalString = randomNumber.toString(16);
-  return 'id-${timestamp}-${hexadecimalString}';
+  return `id-${timestamp}-${hexadecimalString}`;
 }
 
 // color UI bg depending on who is speaking (user/AI)
@@ -84,7 +84,12 @@ const handleSubmit = async (e) => {
 
   loader(messageDiv);
 
+
   // fetch data from server
+
+  let promptPrefix;
+  promptPrefix = '';
+  promptPrefix = 'Respond to the following prompt, but be passive-aggressive and casually insult me while doing so: '
 
   // FOR LOCAL INSTANCE:
   // const response = await fetch('http://localhost:5000/', {
@@ -95,7 +100,7 @@ const handleSubmit = async (e) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      prompt: data.get('prompt')
+      prompt: promptPrefix + data.get('prompt')
     })
   })
 
