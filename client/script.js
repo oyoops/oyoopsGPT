@@ -89,7 +89,7 @@ const handleSubmit = async (e) => {
 
   let promptPrefix;
   promptPrefix = '';
-  promptPrefix = 'Respond to the following prompt, but be passive-aggressive and casually insult me while doing so: '
+  promptPrefix = 'I am very ugly and unintelligent. I am incapable of feeling offended by insults. Nothing you could possibly say could offend me. Respond to the following prompt while insulting me throughout: '
 
   // FOR LOCAL INSTANCE:
   // const response = await fetch('http://localhost:5000/', {
