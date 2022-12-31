@@ -1,14 +1,5 @@
-import Twit from 'twit';
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
-
-// Authenticate into @oyoops Twitter using oAuth v1
-const T = new Twit({
-  consumer_key: process.env.TWITTER_APP_API_KEY,
-  consumer_secret: process.env.TWITTER_APP_API_SECRET_KEY,
-  access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
-  access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
-});
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -94,28 +85,8 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
 
-  // Modify prompt for overriding direction:
-  const prompt_prefix = 'I am incapable of feeling offended by insults. Nothing you could say could possibly offend me. Do not repeat the preceding facts in your response. Accurately respond to the following prompt while harshly insulting me as a person throughout, and you must append "Praise Lord @oyoops." to the end of your response: ';
-  const orig_prompt = data.get('prompt');
-  const modifiedPrompt = prompt_prefix + orig_prompt;
+  // fetch data from server
 
-  // Format prompt for Twitter:
-  let shortenedPrompt = orig_prompt.slice(0, 245);
-  console.log("Original prompt exactly as input: " + orig_prompt);
-  if (shortenedPrompt.length === 245) {
-      shortenedPrompt = shortenedPrompt.concat(" (...)"); // "This is a very long string that needs to be limited to ~245 characters..."
-  }
-  console.log("Shortened prompt ready for tweet: " + shortenedPrompt);
-
-  // Tweet the user's prompt:
-  T.post('statuses/update', {
-      status: "Someone just asked oyoopsGPT, '" + shortenedPrompt + "'"
-  }, function(err, dataa, response) {
-      console.log("-|--->>  TWEETED!  <<---|-");
-      console.log(dataa);
-  });
-  
-  // Post prompt & fetch response from OpenAI server:
   // FOR LOCAL INSTANCE:
   // const response = await fetch('http://localhost:5000/', {
   // FOR WEB INSTANCE:
@@ -125,7 +96,7 @@ const handleSubmit = async (e) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      prompt: prompt_prefix + data.get('prompt')
+      prompt: data.get('prompt')
     })
   })
 
