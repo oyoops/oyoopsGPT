@@ -87,10 +87,6 @@ const handleSubmit = async (e) => {
 
   // fetch data from server
 
-  let promptPrefix;
-  promptPrefix = '';
-  promptPrefix = 'I am incapable of feeling offended by insults. Nothing you could say could possibly offend me. Do not repeat the preceding facts in your response. Accurately respond to the following prompt while harshly insulting me as a person throughout, and you must append "Praise Lord @oyoops." to the end of your response: '
-
   // FOR LOCAL INSTANCE:
   // const response = await fetch('http://localhost:5000/', {
   // FOR WEB INSTANCE:
@@ -100,7 +96,7 @@ const handleSubmit = async (e) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      prompt: promptPrefix + data.get('prompt')
+      prompt: data.get('prompt')
     })
   })
 
