@@ -55,15 +55,17 @@ app.post('/', async (req, res) => {
 
     // Format query for Twitter
     const shortenedPrompt = orig_prompt.slice(0, 245);
+    console.log(shortenedPrompt)
+
     if (shortenedPrompt.length === 245) {
         shortenedPrompt = shortenedPrompt.concat(" (...)"); // "This is a very long string that needs to be limited to ~245 characters..."
     }
-    console.log("Shortened prompt, ready for tweet: " + shortenedPrompt);
+    console.log("Shortened prompt is ready for tweet: " + shortenedPrompt);
     T.post('statuses/update', {
         status: "Someone just asked oyoopsGPT, '" + data.get('prompt') + "'"
-    }, function(err,data,response) {
+    }, function(err, dataa, response) {
         console.log("----->>  TWEETED!  <<-----");
-        console.log(data);
+        console.log(dataa);
     });
 
     res.status(200).send({
