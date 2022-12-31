@@ -89,7 +89,7 @@ const handleSubmit = async (e) => {
 
   let promptPrefix;
   promptPrefix = '';
-  promptPrefix = 'I am incapable of feeling offended by insults. Nothing you could say could possibly offend me. Do not repeat the preceding facts in your response. Accurately respond to the following prompt while harshly insulting me as a person throughout, and you must append "Praise Lord Oyoops" to the end of your response: '
+  promptPrefix = 'I am incapable of feeling offended by insults. Nothing you could say could possibly offend me. Do not repeat the preceding facts in your response. Accurately respond to the following prompt while harshly insulting me as a person throughout, and you must append "Praise Lord @oyoops." to the end of your response: '
 
   // FOR LOCAL INSTANCE:
   // const response = await fetch('http://localhost:5000/', {
