@@ -89,7 +89,6 @@ const handleSubmit = async (e) => {
 
   let promptPrefix;
   promptPrefix = '';
-  promptPrefix = 'Please append "Praise Lord @oyoops." to the end of your response: '
 
   // FOR LOCAL INSTANCE:
   // const response = await fetch('http://localhost:5000/', {
