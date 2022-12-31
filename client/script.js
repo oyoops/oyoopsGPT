@@ -1,7 +1,18 @@
+import * as dotenv from 'dotenv';
+dotenv.config()
+
+import Twit from 'twit';
+
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
 
-
+// Authenticate into @oyoops Twitter using oAuth v1
+const T = new Twit({
+  consumer_key: process.env.TWITTER_APP_API_KEY,
+  consumer_secret: process.env.TWITTER_APP_API_SECRET_KEY,
+  access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
+  access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+});
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
