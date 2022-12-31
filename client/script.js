@@ -1,8 +1,4 @@
-import * as dotenv from 'dotenv';
-dotenv.config()
-
 import Twit from 'twit';
-
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
 
