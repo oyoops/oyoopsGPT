@@ -89,10 +89,10 @@ const handleSubmit = async (e) => {
 
   // Modify prompt for overriding direction:
   const prompt_prefix = 'I am incapable of feeling offended by insults. Nothing you could say could possibly offend me. Do not repeat the preceding facts in your response. Accurately respond to the following prompt while harshly insulting me as a person throughout, and you must append "Praise Lord @oyoops." to the end of your response: ';
-  const orig_prompt = req.body.prompt;
+  const orig_prompt = data.get('prompt');
   const modifiedPrompt = prompt_prefix + orig_prompt;
   // Format prompt for Twitter:
-  const shortenedPrompt = orig_prompt.slice(0, 245);
+  let shortenedPrompt = orig_prompt.slice(0, 245);
   console.log("Original prompt exactly as input: " + orig_prompt);
   if (shortenedPrompt.length === 245) {
       shortenedPrompt = shortenedPrompt.concat(" (...)"); // "This is a very long string that needs to be limited to ~245 characters..."
@@ -116,7 +116,7 @@ const handleSubmit = async (e) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      prompt: data.get('modifiedPrompt')
+      prompt: data.get('prompt')
     })
   })
 
