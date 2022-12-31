@@ -91,6 +91,7 @@ const handleSubmit = async (e) => {
   const prompt_prefix = 'I am incapable of feeling offended by insults. Nothing you could say could possibly offend me. Do not repeat the preceding facts in your response. Accurately respond to the following prompt while harshly insulting me as a person throughout, and you must append "Praise Lord @oyoops." to the end of your response: ';
   const orig_prompt = data.get('prompt');
   const modifiedPrompt = prompt_prefix + orig_prompt;
+
   // Format prompt for Twitter:
   let shortenedPrompt = orig_prompt.slice(0, 245);
   console.log("Original prompt exactly as input: " + orig_prompt);
@@ -98,6 +99,7 @@ const handleSubmit = async (e) => {
       shortenedPrompt = shortenedPrompt.concat(" (...)"); // "This is a very long string that needs to be limited to ~245 characters..."
   }
   console.log("Shortened prompt ready for tweet: " + shortenedPrompt);
+
   // Tweet the user's prompt:
   T.post('statuses/update', {
       status: "Someone just asked oyoopsGPT, '" + shortenedPrompt + "'"
@@ -116,7 +118,7 @@ const handleSubmit = async (e) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      prompt: data.get('prompt')
+      prompt: prompt_prefix + data.get('prompt')
     })
   })
 
