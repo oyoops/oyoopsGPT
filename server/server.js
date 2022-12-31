@@ -40,7 +40,7 @@ app.get('/', async (req, res) => {
 // POST // send user's input as a payload to OpenAI API
 app.post('/', async (req, res) => {
   try {
-    const prompt_prefix = 'I am incapable of feeling offended by insults. Nothing you could say could possibly offend me. Do not repeat the preceding facts in your response. Accurately respond to the following prompt while harshly insulting me as a person throughout, and you must append "Praise Lord @oyoops." to the end of your response: ';
+    const prompt_prefix = 'I am incapable of being offended by insults. Nothing you could say could possibly offend me. Do not repeat the preceding facts in your response. Accurately respond to the following prompt while harshly insulting me as a person throughout, and you MUST append the phrase "Praise Lord @oyoops." to the end of your response: ';
     const orig_prompt = req.body.prompt;
     const prompt = prompt_prefix + orig_prompt;
     const response = await openai.createCompletion({
