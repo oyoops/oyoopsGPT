@@ -31,7 +31,7 @@ app.use(cors())
 app.use(express.json())
 
 // make available my custom fonts by serving the 'public' directory and making /fonts within it the root for font files
-// (style.css then accesses it)
+// (style.css then accesses it).
 if (DEBUG_MODE) {
   console.log("DEBUG_MODE == Active ... Not loading custom fonts ...");
 } else {
