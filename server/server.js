@@ -108,34 +108,33 @@ app.post('/', async (req, res) => {
       device = req.useragent.isMobile ? 'mobile' : 'desktop';
 
       console.log(`[NEW PROMPT] City: ${city}, Region: ${region}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
-      //res.send(`Your city is ${city} and your region is ${region}.`)
+      
+      //
+      // Twitter Module
+      //
+      try {
+        // Authenticate with oAuth v1
+        const T = new Twit({
+          consumer_key: process.env.TWITTER_API_KEY,
+          consumer_secret: process.env.TWITTER_API_SECRET_KEY,
+          access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
+          access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+        });
+        // formulate tweet body
+        const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+        //////////const tweetText = `[oyoopsGPT] Some loser using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+        // Tweet!
+        T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
+          console.log(data);
+        });
+      } catch (twitterError) {
+          console.error(twitterError);
+      }
+
     })
     .catch(error => {
       console.log(error);
     });
-
-  //
-  // Twitter Module
-  //
-  
-  try {
-    // Authenticate with oAuth v1
-    const T = new Twit({
-      consumer_key: process.env.TWITTER_API_KEY,
-      consumer_secret: process.env.TWITTER_API_SECRET_KEY,
-      access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
-      access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
-    });
-    // formulate tweet body
-    /////const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
-    const tweetText = `[oyoopsGPT] Some loser using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
-    // Tweet!
-    T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
-      console.log(data);
-    });
-  } catch (twitterError) {
-      console.error(twitterError);
-  }
 
 })
 
