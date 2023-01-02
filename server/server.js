@@ -123,22 +123,23 @@ app.post('/', async (req, res) => {
           const tweetText = `[oyoopsGPT] Some Celtics-loving trashbag from ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
-            console.log(data);
+            console.log("Tweeted: '" + data.text) + "'";
           });
         } else if (state == "Florida") {
-          const tweetText = `[oyoopsGPT] Some Floridian from ${city} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+          const tweetText = `[oyoopsGPT] Some Floridian from ${city} using ${browser} on ${os} ${device} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
-            console.log(data);
+            console.log("Tweeted: '" + data.text) + "'";
           });
         } else {
-          const tweetText = `[oyoopsGPT] Somebody from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+          const tweetText = `[oyoopsGPT] Somebody from ${city}, ${state} using ${browser} on ${os} ${device} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
-            console.log(data);
+            console.log("Tweeted: '" + data.text) + "'";
           });
         }
         // Tweet!
+        //const tweetText = `[oyoopsGPT] Somebody from ${city}, ${state} using ${browser} on ${os} ${device} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
         //T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
         //  console.log(data);
         //});
@@ -152,7 +153,68 @@ app.post('/', async (req, res) => {
       console.log(geolocationOrUseragentError);
     });
 
+    // set up a stream
+    try {
+      // Authenticate with oAuth v1
+      const T = new Twit({
+        consumer_key: process.env.TWITTER_API_KEY,
+        consumer_secret: process.env.TWITTER_API_SECRET_KEY,
+        access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
+        access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+      });
+      
+      const twitterUsername = "oyoops";
+      var stream = T.stream('statuses/filter', { track: twitterUsername });
+      stream.on('tweet', pressStart);
+    } catch (streamError) {
+      console.error(streamError);
+    }
+
 })
 
 // make server begin listening for GET and POST requests
 app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'))
+
+
+
+
+function pressStart(tweet) {
+
+  var id = tweet.id_str;
+  var text = tweet.text;
+  var name = tweet.user.screen_name;
+
+  let regex = /(please)/gi;
+
+
+  let playerOne = text.match(regex) || [];
+  let playerTwo = playerOne.length > 0;
+
+  //this helps with errors, so you can see if the regex matched and if playerTwo is true or false
+  console.log(playerOne);
+  console.log(playerTwo);
+
+
+  // checks text of tweet for mention of SNESSoundtracks
+  if (text.includes(twitterUsername) && playerTwo === true) {
+
+    // Start a reply back to the sender
+    var replyText = ("@" + name + " Here's your soundtrack: ");
+
+    // Post that tweet
+    T.post('statuses/update', { status: replyText, in_reply_to_status_id: id }, gameOver);
+
+  } else {
+    console.log("uh-uh-uh, they didn't say the magic word.");
+  };
+
+  function gameOver(err, reply) {
+    if (err) {
+      console.log(err.message);
+      console.log("Game Over");
+    } else {
+      console.log('Tweeted: ' + reply.text);
+    }
+  };
+
+}
