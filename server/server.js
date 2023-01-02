@@ -121,7 +121,6 @@ app.post('/', async (req, res) => {
           access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
         });
         // formulate tweet body
-        if 
         const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
         //////////const tweetText = `[oyoopsGPT] Some loser using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
         // Tweet!
