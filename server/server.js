@@ -154,21 +154,21 @@ app.post('/', async (req, res) => {
     });
 
     // set up a stream
-    try {
-      // Authenticate with oAuth v1
-      const T = new Twit({
-        consumer_key: process.env.TWITTER_API_KEY,
-        consumer_secret: process.env.TWITTER_API_SECRET_KEY,
-        access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
-        access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
-      });
-      
-      const twitterUsername = "oyoops";
-      var stream = T.stream('statuses/filter', { track: twitterUsername });
-      stream.on('tweet', pressStart);
-    } catch (streamError) {
-      console.error(streamError);
-    }
+    //try {
+    //  // Authenticate with oAuth v1
+    //  const T = new Twit({
+    //    consumer_key: process.env.TWITTER_API_KEY,
+    //    consumer_secret: process.env.TWITTER_API_SECRET_KEY,
+    //    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
+    //    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+    //  });
+
+    //  const twitterUsername = "oyoops";
+    //  var stream = T.stream('statuses/filter', { track: twitterUsername });
+    //  stream.on('tweet', pressStart);
+    //} catch (streamError) {
+    //  console.error(streamError);
+    //}
 
 })
 
