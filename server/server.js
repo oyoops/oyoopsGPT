@@ -5,10 +5,12 @@ import { Configuration, OpenAIApi } from 'openai'
 import Twit from 'twit'
 import path from 'path'
 import axios from axios
-import ipGeoModule from 'ip-geolocation-api-javascript-sdk'
+import useragent from 'useragent'
+//import ipGeoModule from 'ip-geolocation-api-javascript-sdk'
 
-//const useragent = require('useragent');
-const geolocation = require('ip-geolocation-api-javascript-sdk');
+const axios = require('axios');
+const useragent = require('useragent');
+//const geolocation = require('ip-geolocation-api-javascript-sdk');
 
 const DEBUG_MODE = false;
 
@@ -89,12 +91,15 @@ app.post('/', async (req, res) => {
       const data = response.data
       const city = data.city
       const region = data.region
-      console.log(`New prompt received from ${city}, ${region}.`)
-      res.send(`Your city is ${city} and your region is ${region}.`)
+      const browser = req.useragent.browser
+      const os = req.useragent.os
+      const device = req.useragent.isMobile ? 'mobile' : 'desktop'
+      console.log(`[NEW PROMPT] City: ${city}, Region: ${region}, Browser: ${browser}, OS: ${os}, Device: ${device}`)
+      //res.send(`Your city is ${city} and your region is ${region}.`)
     })
     .catch(error => {
       console.log(error)
-      res.send('An error occurred.')
+      //res.send('An error occurred.')
     })
 
 
@@ -111,9 +116,8 @@ app.post('/', async (req, res) => {
       access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
     });
     // formulate tweet body
-    const tweetText = `[oyoopsGPT] Someone from ${city}, ${state} said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+    const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
     // Tweet!
-    //T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
     T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
       console.log(data);
     });
