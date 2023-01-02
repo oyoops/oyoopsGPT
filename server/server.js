@@ -84,7 +84,8 @@ app.post('/', async (req, res) => {
   // Geolocation Module
   //
 
-  const ip = req.ip || req.connection.remoteAddress; // || req.headers['x-forwarded-for'] 
+  const ip =  req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  ////const ip = req.ip || req.connection.remoteAddress; // || req.headers['x-forwarded-for'] 
   console.log("IP Address: " + ip);
   axios.get(`https://ipapi.co/${ip}/json/`)
     .then(response => {
