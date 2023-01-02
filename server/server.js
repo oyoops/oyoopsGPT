@@ -84,11 +84,17 @@ app.post('/', async (req, res) => {
   // Geolocation Module
   //
 
-  const ip =  req.ip; // req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  ////const ip = req.ip || req.connection.remoteAddress; // || req.headers['x-forwarded-for'] 
+  // get client IP
+  const ips =  req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const ip = ip.substring(0, ips.indexOf(",")).trim();
   console.log("IP Address: " + ip);
 
-  let city, region, browser, os, device;
+  //
+  const city = '';
+  const region = '';
+  const browser = '';
+  const os = '';
+  const device = '';
 
   axios.get(`https://ipapi.co/${ip}/json/`)
     .then(response => {
