@@ -101,13 +101,13 @@ app.post('/', async (req, res) => {
       const data = response.data;
       // geolocate client using IP (from header) & ipapi free API
       city = data.city;
-      region = data.region;
+      state = data.region;
       // get client properties from useragent
       browser = req.useragent.browser;
       os = req.useragent.os;
       device = req.useragent.isMobile ? 'mobile' : 'desktop';
 
-      console.log(`[NEW PROMPT] City: ${city}, Region: ${region}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
+      console.log(`[NEW PROMPT] City: ${city}, State: ${state}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
       
       //
       // Twitter Module
@@ -121,6 +121,7 @@ app.post('/', async (req, res) => {
           access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
         });
         // formulate tweet body
+        if 
         const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
         //////////const tweetText = `[oyoopsGPT] Some loser using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
         // Tweet!
