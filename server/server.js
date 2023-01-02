@@ -84,25 +84,29 @@ app.post('/', async (req, res) => {
   // Geolocation Module
   //
 
-  const ip =  req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const ip =  req.ip; // req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   ////const ip = req.ip || req.connection.remoteAddress; // || req.headers['x-forwarded-for'] 
   console.log("IP Address: " + ip);
+
+  const city, region, browser, os, device;
+
   axios.get(`https://ipapi.co/${ip}/json/`)
     .then(response => {
       const data = response.data;
-      const city = data.city;
-      const region = data.region;
-      const browser = req.useragent.browser;
-      const os = req.useragent.os;
-      const device = req.useragent.isMobile ? 'mobile' : 'desktop';
+      // geolocate client using IP (from header) & ipapi free API
+      city = data.city;
+      region = data.region;
+      // get client properties from useragent
+      browser = req.useragent.browser;
+      os = req.useragent.os;
+      device = req.useragent.isMobile ? 'mobile' : 'desktop';
+
       console.log(`[NEW PROMPT] City: ${city}, Region: ${region}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
       //res.send(`Your city is ${city} and your region is ${region}.`)
     })
     .catch(error => {
       console.log(error);
-      //res.send('An error occurred.')
     });
-
 
   //
   // Twitter Module
@@ -126,7 +130,6 @@ app.post('/', async (req, res) => {
   } catch (twitterError) {
       console.error(twitterError);
   }
-
 
 })
 
