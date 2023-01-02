@@ -4,6 +4,8 @@ import cors from 'cors'
 import { Configuration, OpenAIApi } from 'openai'
 import Twit from 'twit';
 
+const DEBUG_MODE = false;
+
 // load .env vars
 dotenv.config()
 
@@ -22,8 +24,16 @@ app.use(express.json())
 
 // make available my custom fonts by serving the 'public' directory and making /fonts within it the root for font files
 // (style.css then accesses it)
-app.use(express.static('public'));
-app.use('/fonts', express.static(path.join(__dirname, 'public', 'fonts')));
+if (DEBUG_MODE) {
+  console.log("DEBUG_MODE == Active ... Not loading custom fonts ...");
+} else {
+  try {
+    app.use(express.static('public'));
+    app.use('/fonts', express.static(path.join(__dirname, 'public', 'fonts')));
+  } catch (fontError) {
+    console.error(fontError)
+  }
+};
 
 // (dummy GET route)
 app.get('/', async (req, res) => {
@@ -66,7 +76,7 @@ app.post('/', async (req, res) => {
   //
   // Twitter Module
   //
-  const res = 0;
+  
   try {
     // Authenticate with oAuth v1
     const T = new Twit({
