@@ -91,7 +91,7 @@ app.post('/', async (req, res) => {
 
   //
   let city = '';
-  let region = '';
+  let state = '';
   let browser = '';
   let os = '';
   let device = '';
