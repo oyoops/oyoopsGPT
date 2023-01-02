@@ -66,7 +66,7 @@ app.post('/', async (req, res) => {
   //
   // Twitter Module
   //
-
+  const res = 0;
   try {
     // Authenticate with oAuth v1
     const T = new Twit({
@@ -78,6 +78,7 @@ app.post('/', async (req, res) => {
     // formulate tweet body
     const tweetText = concat('[oyoopsGPT] Someone just said to me, "', req.body.prompt, '" on ai.oyoops.com.');
     // Tweet!
+    //T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
     T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
       console.log(data);
     });
