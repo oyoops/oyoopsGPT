@@ -8,9 +8,6 @@ import axios from 'axios'
 import useragent from 'useragent'
 //import ipGeoModule from 'ip-geolocation-api-javascript-sdk'
 
-const axios = require('axios');
-const useragent = require('useragent');
-//const geolocation = require('ip-geolocation-api-javascript-sdk');
 
 const DEBUG_MODE = false;
 
@@ -29,6 +26,7 @@ const openai = new OpenAIApi(configuration);
 const app = express()
 app.use(cors())
 app.use(express.json())
+app.use(useragent.express())
 
 // make available my custom fonts by serving the 'public' directory and making /fonts within it the root for font files
 // (style.css then accesses it).
