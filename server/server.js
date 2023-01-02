@@ -84,23 +84,23 @@ app.post('/', async (req, res) => {
   // Geolocation Module
   //
 
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-  console.log("IP Address: " + ip)
+  const ip = req.ip || req.connection.remoteAddress; // || req.headers['x-forwarded-for'] 
+  console.log("IP Address: " + ip);
   axios.get(`https://ipapi.co/${ip}/json/`)
     .then(response => {
-      const data = response.data
-      const city = data.city
-      const region = data.region
-      const browser = req.useragent.browser
-      const os = req.useragent.os
-      const device = req.useragent.isMobile ? 'mobile' : 'desktop'
-      console.log(`[NEW PROMPT] City: ${city}, Region: ${region}, Browser: ${browser}, OS: ${os}, Device: ${device}`)
+      const data = response.data;
+      const city = data.city;
+      const region = data.region;
+      const browser = req.useragent.browser;
+      const os = req.useragent.os;
+      const device = req.useragent.isMobile ? 'mobile' : 'desktop';
+      console.log(`[NEW PROMPT] City: ${city}, Region: ${region}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
       //res.send(`Your city is ${city} and your region is ${region}.`)
     })
     .catch(error => {
-      console.log(error)
+      console.log(error);
       //res.send('An error occurred.')
-    })
+    });
 
 
   //
@@ -117,7 +117,7 @@ app.post('/', async (req, res) => {
     });
     // formulate tweet body
     /////const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
-    const tweetText = `[oyoopsGPT] Some loser using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+    const tweetText = `[oyoopsGPT] Some loser using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
     // Tweet!
     T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
       console.log(data);
