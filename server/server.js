@@ -79,7 +79,7 @@ app.post('/', async (req, res) => {
     const tweetText = concat('[oyoopsGPT] Someone just said to me, "', req.body.prompt, '" on ai.oyoops.com.');
     // Tweet!
     T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
-        console.log(data);
+      console.log(data);
     });
   } catch (twitterError) {
       console.error(twitterError);
