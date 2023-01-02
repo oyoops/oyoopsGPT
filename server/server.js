@@ -9,7 +9,6 @@ import useragent from 'express-useragent'
 //
 //import ipGeoModule from 'ip-geolocation-api-javascript-sdk'
 
-
 const DEBUG_MODE = false;
 
 // load .env vars
@@ -81,7 +80,7 @@ app.post('/', async (req, res) => {
   }
 
   //
-  // Geolocation Module
+  // Twitter Module
   //
 
   // get client IP
@@ -96,10 +95,9 @@ app.post('/', async (req, res) => {
   let os = '';
   let device = '';
 
-  axios.get(`https://ipapi.co/${ip}/json/`)
+  axios.get(`https://ipapi.co/${ip}/json/`) // geolocate client using IP (from header) & ipapi free API
     .then(response => {
       const data = response.data;
-      // geolocate client using IP (from header) & ipapi free API
       city = data.city;
       state = data.region;
       // get client properties from useragent
@@ -109,9 +107,7 @@ app.post('/', async (req, res) => {
 
       console.log(`[NEW PROMPT] City: ${city}, State: ${state}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
       
-      //
-      // Twitter Module
-      //
+      // Connect to Twitter and tweet the current prompt.
       try {
         // Authenticate with oAuth v1
         const T = new Twit({
@@ -120,8 +116,9 @@ app.post('/', async (req, res) => {
           access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
           access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
         });
+        // Note: If Twitter API fails to authenticate, the rest of this block will not run.
 
-        // formulate tweet body
+        // formulate tweet body depending on conditions
         if (state == "Massachusetts") {
           const tweetText = `[oyoopsGPT] Some Celtics-loving trashbag from ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
@@ -145,14 +142,14 @@ app.post('/', async (req, res) => {
         //T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
         //  console.log(data);
         //});
-        
+
       } catch (twitterError) {
           console.error(twitterError);
       }
 
     })
-    .catch(error => {
-      console.log(error);
+    .catch(geolocationOrUseragentError => {
+      console.log(geolocationOrUseragentError);
     });
 
 })
