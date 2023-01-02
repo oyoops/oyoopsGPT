@@ -87,7 +87,7 @@ app.post('/', async (req, res) => {
       access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
     });
     // formulate tweet body
-    const tweetText = '[oyoopsGPT] Someone just said to me, "' + req.body.prompt + '" on ai.oyoops.com.';
+    const tweetText = '[oyoopsGPT] Someone just said to me, "' + req.body.prompt.trim() + '" on ai.oyoops.com.';
     // Tweet!
     //T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
     T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
