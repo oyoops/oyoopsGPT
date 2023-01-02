@@ -4,6 +4,11 @@ import cors from 'cors'
 import { Configuration, OpenAIApi } from 'openai'
 import Twit from 'twit'
 import path from 'path'
+import axios from axios
+import ipGeoModule from 'ip-geolocation-api-javascript-sdk'
+
+//const useragent = require('useragent');
+const geolocation = require('ip-geolocation-api-javascript-sdk');
 
 const DEBUG_MODE = false;
 
@@ -75,6 +80,25 @@ app.post('/', async (req, res) => {
   }
 
   //
+  // Geolocation Module
+  //
+
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  axios.get(`https://ipapi.co/${ip}/json/`)
+    .then(response => {
+      const data = response.data
+      const city = data.city
+      const region = data.region
+      console.log(`New prompt received from ${city}, ${region}.`)
+      res.send(`Your city is ${city} and your region is ${region}.`)
+    })
+    .catch(error => {
+      console.log(error)
+      res.send('An error occurred.')
+    })
+
+
+  //
   // Twitter Module
   //
   
@@ -87,7 +111,7 @@ app.post('/', async (req, res) => {
       access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
     });
     // formulate tweet body
-    const tweetText = '[oyoopsGPT] Someone just said to me, "' + req.body.prompt.trim() + '" on ai.oyoops.com.';
+    const tweetText = `[oyoopsGPT] Someone from ${city}, ${state} said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
     // Tweet!
     //T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
     T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
