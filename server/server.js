@@ -86,7 +86,7 @@ app.post('/', async (req, res) => {
 
   // get client IP
   const ips =  req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  const ip = ip.substring(0, ips.indexOf(",")).trim();
+  const ip = ips.substring(0, ips.indexOf(",")).trim();
   console.log("IP Address: " + ip);
 
   //
