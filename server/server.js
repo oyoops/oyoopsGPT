@@ -5,7 +5,7 @@ import { Configuration, OpenAIApi } from 'openai'
 import Twit from 'twit'
 import path from 'path'
 import axios from 'axios'
-import useragent from 'useragent'
+import useragent from 'express-useragent'
 //import ipGeoModule from 'ip-geolocation-api-javascript-sdk'
 
 
