@@ -85,6 +85,7 @@ app.post('/', async (req, res) => {
   //
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  console.log("IP Address: " + ip)
   axios.get(`https://ipapi.co/${ip}/json/`)
     .then(response => {
       const data = response.data
@@ -115,7 +116,8 @@ app.post('/', async (req, res) => {
       access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
     });
     // formulate tweet body
-    const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+    /////const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+    const tweetText = `[oyoopsGPT] Some loser using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
     // Tweet!
     T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
       console.log(data);
