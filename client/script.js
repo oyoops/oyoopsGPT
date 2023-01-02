@@ -1,6 +1,8 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
 
+const DEBUG_MODE = false;
+
 // get objects from DOM
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -109,10 +111,17 @@ const handleSubmit = async (e) => {
   let promptPrefix;
   promptPrefix = '';
 
-
+  // debug mode?
+  let myURLandPort;
+  if (DEBUG_MODE) {
+    myURLandPort = 'http://localhost:5000/';
+  } else {
+    myURLandPort = 'https://oyoopsgpt.onrender.com/';
+  }
+  
   // AWAIT response from server 
   // after sending a POST request
-  const response = await fetch('https://oyoopsgpt.onrender.com/', {  // FOR LOCAL INSTANCE: const response = await fetch('http://localhost:5000/', {
+  const response = await fetch(myURLandPort, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
