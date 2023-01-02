@@ -1,20 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@100;300;400;500;700;800;900&display=swap");
 
+@font-face {
+  font-family: 'VT323';
+  src: url('/fonts/VT323-Regular.ttf');
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Alegreya Sans", sans-serif;
+  font-family: "VT323"
 }
 
 body {
-  background: #343541;
+  background: #10111f;
 }
 
 #app {
   width: 100vw;
   height: 100vh;
-  background: #343541;
+  background: #10111f;
 
   display: flex;
   flex-direction: column;
@@ -50,7 +55,7 @@ body {
 }
 
 .ai {
-  background: #40414F;
+  background: #17192c;
 }
 
 .chat {
@@ -69,7 +74,7 @@ body {
   height: 36px;
   border-radius: 5px;
 
-  background: #370eb2;
+  background: #c4e921;
 
   display: flex;
   justify-content: center;
@@ -77,7 +82,7 @@ body {
 }
 
 .ai .profile {
-  background: #7f0d0d;
+  background: #015f09;
 }
 
 .profile img {
@@ -89,7 +94,7 @@ body {
 .message {
   flex: 1;
 
-  color: #dcdcdc;
+  color: #16e920;
   font-size: 20px;
 
   max-width: 100%;
@@ -117,7 +122,7 @@ form {
   max-width: 1280px;
   margin: 0 auto;
   padding: 10px;
-  background: #40414F;
+  background: #383a4e;
 
   display: flex;
   flex-direction: row;
