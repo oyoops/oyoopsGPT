@@ -90,11 +90,11 @@ app.post('/', async (req, res) => {
   console.log("IP Address: " + ip);
 
   //
-  const city = '';
-  const region = '';
-  const browser = '';
-  const os = '';
-  const device = '';
+  let city = '';
+  let region = '';
+  let browser = '';
+  let os = '';
+  let device = '';
 
   axios.get(`https://ipapi.co/${ip}/json/`)
     .then(response => {
