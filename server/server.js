@@ -120,9 +120,16 @@ app.post('/', async (req, res) => {
           access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
           access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
         });
+        
         // formulate tweet body
-        const tweetText = `[oyoopsGPT] Some loser from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
-        //////////const tweetText = `[oyoopsGPT] Some loser using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+        if (state == "Massachusetts") {
+          const tweetText = `[oyoopsGPT] Some Celtics-loving trashbag from ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+        } else if (state == "Florida") {
+          const tweetText = `[oyoopsGPT] Some Floridian from ${city} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+        } else {
+          const tweetText = `[oyoopsGPT] Somebody from ${city}, ${state} using ${browser} on ${os} (${device}) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+        }
+
         // Tweet!
         T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
           console.log(data);
