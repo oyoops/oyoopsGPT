@@ -88,7 +88,7 @@ app.post('/', async (req, res) => {
   ////const ip = req.ip || req.connection.remoteAddress; // || req.headers['x-forwarded-for'] 
   console.log("IP Address: " + ip);
 
-  const city, region, browser, os, device;
+  let city, region, browser, os, device;
 
   axios.get(`https://ipapi.co/${ip}/json/`)
     .then(response => {
