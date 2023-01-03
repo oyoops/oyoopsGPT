@@ -195,24 +195,24 @@ app.post('/', async (req, res) => {
             rootTweetId = data.id;
           });
         } else if (os == "OS X" && browser == "Safari") {
-          const tweetText = `[oyoopsGPT] Somebody from ${city} on an iPhone just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+          const tweetText = `[oyoopsGPT] Somebody from ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me from their iPhone on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
             console.log("Tweeted: '" + data.text) + "'";
             rootTweetId = data.id;
           });
         } else if (state == "Florida") {
-          const tweetText = `[oyoopsGPT] Some Floridian in ${city} using ${browser} on ${os} ${device} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+          const tweetText = `[oyoopsGPT] Someone from ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
             console.log("Tweeted: '" + data.text) + "'";
             rootTweetId = data.id;
           });
         } else {
-          const tweetText = `[oyoopsGPT] Somebody in ${city}, ${state} using ${browser} on ${os} ${device} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+          const tweetText = `[oyoopsGPT] Somebody in ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
-            console.log("Tweeted: '" + data.text) + "'";
+            console.log("Tweeted: '" + data) + "'";
             rootTweetId = data.id;
           });
         }
