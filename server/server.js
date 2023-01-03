@@ -171,7 +171,7 @@ app.post('/', async (req, res) => {
       // log new prompt received
       console.log(`[ NEW PROMPT ] City: ${city}, State: ${state}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
       console.log(`[  HAS BEEN  ] >> ${prompt}`);
-      console.log(`[  RECEIVED  ] @@ ${response}`);
+      console.log(`[  RECEIVED  ] @@ ${botResponse}`);
 
       // Connect to Twitter and tweet the prompt/response
       try {
@@ -224,8 +224,8 @@ app.post('/', async (req, res) => {
 
 
         // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
-
-        var replyTweetText = '... to which I responded, "' + botResponse.substring(0,230) + '"' + '\n\n' + 'How did I do? #bot';
+        var replyTo = rootTweetId;
+        var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210) + '"' + '\n\n' + 'How did I do? #bot';
         T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${rootTweetId}` }, function(err, data, response) {
           console.log("Replied: '" + data.text) + "'";
           var replyTweetId = data.id;
