@@ -120,7 +120,7 @@ app.post('/', async (req, res) => {
   // send user's input as a payload to OpenAI API
   try {
     // get user's prompt (immediate)
-    const prompt = req.body.prompt;
+    var prompt = req.body.prompt;
     // get AI's response (***async***)
     const response = await openai.createCompletion({
       model: "text-davinci-003",
@@ -132,8 +132,9 @@ app.post('/', async (req, res) => {
       presence_penalty: 0.25, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
     });
     // if no error, send back the AI's message as the response to client
+    var botResponse = response.data.choices[0].text.trim();
     res.status(200).send({
-      bot: response.data.choices[0].text
+      bot: botResponse
     });
 
   } catch (error) {
@@ -167,10 +168,12 @@ app.post('/', async (req, res) => {
       browser = req.useragent.browser;
       os = req.useragent.os;
       device = req.useragent.isMobile ? 'mobile' : 'desktop';
+      // log new prompt received
+      console.log(`[ NEW PROMPT ] City: ${city}, State: ${state}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
+      console.log(`[  HAS BEEN  ] >> ${prompt}`);
+      console.log(`[  RECEIVED  ] @@ ${response}`);
 
-      console.log(`[NEW PROMPT] City: ${city}, State: ${state}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
-      
-      // Connect to Twitter and tweet the current prompt.
+      // Connect to Twitter and tweet the prompt/response
       try {
         // Authenticate with oAuth v1
         const T = new Twit({
@@ -181,30 +184,36 @@ app.post('/', async (req, res) => {
         });
         // Note: If Twitter API fails to authenticate, the rest of this block will not run.
 
+        //console.log(rootTweetId);
+
         // formulate tweet body depending on conditions
         if (state == "Massachusetts") {
           const tweetText = `[oyoopsGPT] Some Celtics-loving trashbag from ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
             console.log("Tweeted: '" + data.text) + "'";
+            var rootTweetId = data.id;
           });
         } else if (os == "OS X" && browser == "Safari") {
           const tweetText = `[oyoopsGPT] Somebody from ${city} on an iPhone just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
             console.log("Tweeted: '" + data.text) + "'";
+            var rootTweetId = data.id;
           });
         } else if (state == "Florida") {
           const tweetText = `[oyoopsGPT] Some Floridian in ${city} using ${browser} on ${os} ${device} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
             console.log("Tweeted: '" + data.text) + "'";
+            var rootTweetId = data.id;
           });
         } else {
           const tweetText = `[oyoopsGPT] Somebody in ${city}, ${state} using ${browser} on ${os} ${device} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
             console.log("Tweeted: '" + data.text) + "'";
+            var rootTweetId = data.id;
           });
         }
         // Tweet!
@@ -212,6 +221,15 @@ app.post('/', async (req, res) => {
         //T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
         //  console.log(data);
         //});
+
+
+        // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
+
+        var replyTweetText = '... to which I responded, "' + botResponse.substring(0,230) + '"' + '\n\n' + 'How did I do? #bot';
+        T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${rootTweetId}` }, function(err, data, response) {
+          console.log("Replied: '" + data.text) + "'";
+          var replyTweetId = data.id;
+        });
 
       } catch (twitterError) {
           console.error(twitterError);
