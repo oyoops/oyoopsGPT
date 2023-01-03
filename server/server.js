@@ -190,30 +190,50 @@ app.post('/', async (req, res) => {
         if (state == "Massachusetts") {
           const tweetText = `[oyoopsGPT] Some Celtics-loving trashbag from ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
-          T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
+          T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + data.text) + "'";
-            rootTweetId = data.id;
-          });
-        } else if (os == "OS X" && browser == "Safari") {
-          const tweetText = `[oyoopsGPT] Somebody from ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me from their iPhone on ai.oyoops.com #bot';
-          // Tweet!
-          T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
-            console.log("Tweeted: '" + data.text) + "'";
-            rootTweetId = data.id;
+            rootTweetId = tweetData.id;
+            // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
+            var replyToId = rootTweetId;
+            var replyId = '0';
+            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim + '"' + '\n\n' + 'How did I do? #bot';
+            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
+              console.log("Replied: '" + data.text) + "'";
+              replyId = data.id;
+            });
+            console.log("Replied to ID: " + replyTweetId);
           });
         } else if (state == "Florida") {
           const tweetText = `[oyoopsGPT] Someone from ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
-          T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
+          T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + data.text) + "'";
-            rootTweetId = data.id;
+            rootTweetId = tweetData.id;
+            // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
+            var replyToId = rootTweetId;
+            var replyId = '0';
+            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim + '"' + '\n\n' + 'How did I do? #bot';
+            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
+              console.log("Replied: '" + data.text) + "'";
+              replyId = data.id;
+            });
+            console.log("Replied to ID: " + replyTweetId);
           });
         } else {
           const tweetText = `[oyoopsGPT] Somebody in ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
           // Tweet!
-          T.post('statuses/update', { status: `${tweetText}` }, function(err, data, response) {
-            console.log("Tweeted: '" + data) + "'";
-            rootTweetId = data.id;
+          T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
+            console.log("Tweeted: '" + data.text) + "'";
+            rootTweetId = tweetData.id;
+            // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
+            var replyToId = rootTweetId;
+            var replyId = '0';
+            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim + '"' + '\n\n' + 'How did I do? #bot';
+            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
+              console.log("Replied: '" + data.text) + "'";
+              replyId = data.id;
+            });
+            console.log("Replied to ID: " + replyTweetId);
           });
         }
         // Tweet!
@@ -223,15 +243,15 @@ app.post('/', async (req, res) => {
         //});
 
 
-        // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
+        /* // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
         var replyTo = rootTweetId;
         var replyTweetId = '0';
-        var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210) + '"' + '\n\n' + 'How did I do? #bot';
+        var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim + '"' + '\n\n' + 'How did I do? #bot';
         T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyTo}` }, function(err, data, response) {
           console.log("Replied: '" + data.text) + "'";
           replyTweetId = data.id;
         });
-        console.log("Replied to ID: " + replyTweetId);
+        console.log("Replied to ID: " + replyTweetId); */
 
       } catch (twitterError) {
           console.error(twitterError);
