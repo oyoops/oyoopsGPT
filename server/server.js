@@ -195,7 +195,9 @@ app.post('/', async (req, res) => {
             rootTweetId = tweetData.id_str;
             // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
             var replyToId = rootTweetId;
-            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim() + '"' + '\n' + 'How did I do? #bot';
+            var botReply = botResponse.substring(0,220).trim();
+            if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
+            var replyTweetText = '@oyoops I kindly responded, "' + botReply + '"' + ' #bot';
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id_str;
@@ -210,8 +212,9 @@ app.post('/', async (req, res) => {
             rootTweetId = tweetData.id_str;
             // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
             var replyToId = rootTweetId;
-            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim() + '"' + '\n' + 'How did I do? #bot';
-            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
+            var botReply = botResponse.substring(0,220).trim();
+            if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
+            var replyTweetText = '@oyoops I kindly responded, "' + botReply + '"' + ' #bot';            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               console.log(data);
               var replyId = data.id_str;
@@ -226,8 +229,9 @@ app.post('/', async (req, res) => {
             rootTweetId = tweetData.id_str;
             // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
             var replyToId = rootTweetId;
-            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim() + '"' + '\n' + 'How did I do? #bot';
-            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
+            var botReply = botResponse.substring(0,220).trim();
+            if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
+            var replyTweetText = '@oyoops I kindly responded, "' + botReply + '"' + ' #bot';            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id_str;
               console.log("Replied to ID: " + replyToId);
