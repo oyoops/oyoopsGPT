@@ -201,7 +201,7 @@ app.post('/', async (req, res) => {
               console.log("Replied: '" + data.text) + "'";
               replyId = data.id;
             });
-            console.log("Replied to ID: " + replyTweetId);
+            console.log("Replied to ID: " + replyId);
           });
         } else if (state == "Florida") {
           const tweetText = `[oyoopsGPT] Someone from ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
@@ -217,7 +217,7 @@ app.post('/', async (req, res) => {
               console.log("Replied: '" + data.text) + "'";
               replyId = data.id;
             });
-            console.log("Replied to ID: " + replyTweetId);
+            console.log("Replied to ID: " + replyId);
           });
         } else {
           const tweetText = `[oyoopsGPT] Somebody in ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
@@ -233,7 +233,7 @@ app.post('/', async (req, res) => {
               console.log("Replied: '" + data.text) + "'";
               replyId = data.id;
             });
-            console.log("Replied to ID: " + replyTweetId);
+            console.log("Replied to ID: " + replyId);
           });
         }
         // Tweet!
