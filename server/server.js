@@ -195,7 +195,7 @@ app.post('/', async (req, res) => {
             rootTweetId = tweetData.id;
             // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
             var replyToId = rootTweetId;
-            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim + '"' + '\n' + 'How did I do? #bot';
+            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim() + '"' + '\n' + 'How did I do? #bot';
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id;
@@ -210,7 +210,7 @@ app.post('/', async (req, res) => {
             rootTweetId = tweetData.id;
             // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
             var replyToId = rootTweetId;
-            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim + '"' + '\n' + 'How did I do? #bot';
+            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim() + '"' + '\n' + 'How did I do? #bot';
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id;
@@ -225,7 +225,7 @@ app.post('/', async (req, res) => {
             rootTweetId = tweetData.id;
             // FOLLOW-UP PROMPT TWEET WITH RESPONSE REPLY TWEET:
             var replyToId = rootTweetId;
-            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim + '"' + '\n' + 'How did I do? #bot';
+            var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim() + '"' + '\n' + 'How did I do? #bot';
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id;
