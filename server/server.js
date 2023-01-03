@@ -199,7 +199,7 @@ app.post('/', async (req, res) => {
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id;
-              console.log("Replied to ID: " + replyId);
+              console.log("Replied to ID: " + replyToId);
             });
           });
         } else if (state == "Florida") {
@@ -212,9 +212,9 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim() + '"' + '\n' + 'How did I do? #bot';
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
-              console.log("Replied: '" + data.text) + "'";
+              console.log("Replied: '" + data) + "'";
               var replyId = data.id;
-              console.log("Replied to ID: " + replyId);
+              console.log("Replied to ID: " + replyToId);
             });
           });
         } else {
@@ -229,7 +229,7 @@ app.post('/', async (req, res) => {
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id;
-              console.log("Replied to ID: " + replyId);
+              console.log("Replied to ID: " + replyToId);
             });
           });
         }
