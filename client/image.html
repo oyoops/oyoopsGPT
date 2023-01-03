@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OYOOP-E - Image Generator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" integrity="sha384-ZYCHBgIxvxE2DUb8br4jK1AP4MvEYHnW6l8g41Yel2n+jTvU3w6U8T6Ipj+TnZG9" crossorigin="anonymous"/>
+  </head>
+  <body>
+
+    <template>
+      <div class="container mt-5">
+        <h1 class="text-center mb-5">OYOOP-E</h1>
+        <form @submit.prevent="submit" class="form-group">
+          <div class="custom-file">
+            <input
+              type="file"
+              ref="imageInput"
+              class="custom-file-input"
+              id="imageInput"
+              accept="image/*"
+              required
+            />
+            <label class="custom-file-label" for="imageInput">Choose image</label>
+          </div>
+          <div class="form-group mt-3">
+            <textarea
+              v-model="description"
+              class="form-control"
+              placeholder="Enter a description for the image"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Tweet image</button>
+        </form>
+      </div>
+    </template>
+    
+    <script type="module" src="imageGenScript.js"></script>
+  
+  </body>
+</html>

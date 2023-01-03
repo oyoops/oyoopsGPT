@@ -6,6 +6,8 @@ import Twit from 'twit'
 import path from 'path'
 import axios from 'axios'
 import useragent from 'express-useragent'
+import multer from 'multer'
+import { variations } from 'dalle'
 
 const DEBUG_MODE = false;
 
@@ -41,10 +43,56 @@ if (DEBUG_MODE) {
 
 // ---------------------
 
-// function ez
-const processSomething = callback => {
-  setTimeout(callback, 20000);
+export async function tweetImage(image, description) {
+  try {
+    // Upload the image to Twitter
+    const media = await client.post('media/upload', { media: image });
+    // Tweet the image with the description
+    await client.post('statuses/update', {
+      status: description,
+      media_ids: media.media_id_string,
+    });
+  } catch (error) {
+    throw error;
+  }
 }
+
+/* // tweet image funtion
+const tweetImage = callback => {
+  setTimeout(callback, 20000);
+  
+  // Authenticate with Twitter API v1
+  const T = new Twit({
+    consumer_key: process.env.TWITTER_API_KEY,
+    consumer_secret: process.env.TWITTER_API_SECRET_KEY,
+    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
+    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+  });
+
+  //Tweet with media (picture)
+  var b64content = fs.readFileSync('./assets/to_tweet/now/tweet_image.png', { encoding: 'base64' })
+  
+  //first we must post the media to Twitter
+  T.post('media/upload', { media_data: b64content }, function (err, data, response) {
+    // now we can assign alt text to the media, for use by screen readers and other text-based presentations and interpreters
+    var mediaIdStr = data.media_id_string
+    var altText = "WOW, LOOKS GOOD....."
+    var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+
+    T.post('media/metadata/create', meta_params, function (err, data, response) {
+        if (!err) {
+            // now we can reference the media and post a tweet (media will attach to the tweet)
+            var params = {
+                status: '[OYOOP-E] Someone just made me generate this cool pic on ai.oyoops.com.\nHow does it look? #bot',
+                media_ids: [mediaIdStr]
+            }
+            T.post('statuses/update', params, function (err, data, response) {
+                console.log("Tweeted: " + data.text)
+            })
+        }
+    })
+  })
+} */
 
 // ---------------------
 
@@ -192,6 +240,27 @@ app.post('/', async (req, res) => {
     //}
 
 });
+
+//
+// OYOOP-E Module
+//
+const upload = multer();
+
+// POST route for OYOOP-E image generator
+app.post('/upload', upload.single('image'), async (req, res) => {
+  try {
+    // Generate a variation of the image
+    const variation = await variations(req.file.buffer);
+
+    // Tweet the image with a description
+    await tweetImage(variation, 'Check this thing out:');
+
+    res.send('Image tweeted successfully.');
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 
 // start Express server & begin listening for GET and POST requests
 app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'))
