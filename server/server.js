@@ -1,3 +1,4 @@
+export default import('dd-trace').init({ appsec: true });
 import express from 'express'
 import * as dotenv from 'dotenv'
 import cors from 'cors'
@@ -8,18 +9,18 @@ import axios from 'axios'
 import useragent from 'express-useragent'
 import { createLogger, format, transports } from 'winston';
 
+// superlogger (DataDog -- ***** Free Trial Expires 1/16/23 *****)
 const logger = createLogger({
   level: 'info',
   exitOnError: false,
   format: format.json(),
   transports: [
-    new transports.File({ filename: `${appRoot}/logs/<FILE_NAME>.log` }),
+    new transports.File({ filename: `${appRoot}/logs/loggy.log` }),
   ],
 });
 logger.log('info', 'Hello simple log!');
 logger.info('Hello log with metas',{color: 'blue' });
-
-export default logger;
+//export default logger;
 
 const DEBUG_MODE = false;
 

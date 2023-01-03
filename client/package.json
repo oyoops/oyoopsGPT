@@ -12,6 +12,7 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
+    "dd-trace": "^3.9.3",
     "winston": "^3.8.2"
   }
 }
