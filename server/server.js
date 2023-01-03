@@ -6,8 +6,20 @@ import Twit from 'twit'
 import path from 'path'
 import axios from 'axios'
 import useragent from 'express-useragent'
-//
-//import ipGeoModule from 'ip-geolocation-api-javascript-sdk'
+import { createLogger, format, transports } from 'winston';
+
+const logger = createLogger({
+  level: 'info',
+  exitOnError: false,
+  format: format.json(),
+  transports: [
+    new transports.File({ filename: `${appRoot}/logs/<FILE_NAME>.log` }),
+  ],
+});
+logger.log('info', 'Hello simple log!');
+logger.info('Hello log with metas',{color: 'blue' });
+
+export default logger;
 
 const DEBUG_MODE = false;
 
@@ -28,8 +40,7 @@ app.use(cors())
 app.use(express.json())
 app.use(useragent.express())
 
-// make available my custom fonts by serving the 'public' directory and making /fonts within it the root for font files
-// (style.css then accesses it)..
+// make available my custom fonts by serving the 'public' directory and making /fonts within it the root for font files. style.css then accesses it.
 if (DEBUG_MODE) {
   console.log("DEBUG_MODE == Active ... Not loading custom fonts ...");
 } else {
@@ -40,6 +51,17 @@ if (DEBUG_MODE) {
     console.error(fontError)
   }
 };
+
+
+// ---------------------
+
+// function ez
+const processSomething = callback => {
+  setTimeout(callback, 20000);
+}
+
+// ---------------------
+
 
 // (dummy GET route)
 app.get('/', async (req, res) => {
@@ -176,15 +198,15 @@ app.post('/', async (req, res) => {
     //  console.error(streamError);
     //}
 
-})
+});
 
-// make server begin listening for GET and POST requests
+// start Express server & begin listening for GET and POST requests
 app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'))
 
 
 
 
-function pressStart(tweet) {
+/* function pressStart(tweet) {
 
   var id = tweet.id_str;
   var text = tweet.text;
@@ -223,4 +245,4 @@ function pressStart(tweet) {
     }
   };
 
-}
+} */
