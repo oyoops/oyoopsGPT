@@ -212,7 +212,8 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var replyTweetText = '@oyoops ... to which I kindly responded, "' + botResponse.substring(0,210).trim() + '"' + '\n' + 'How did I do? #bot';
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
-              console.log("Replied: '" + data) + "'";
+              console.log("Replied: '" + data.text) + "'";
+              console.log(data);
               var replyId = data.id;
               console.log("Replied to ID: " + replyToId);
             });
