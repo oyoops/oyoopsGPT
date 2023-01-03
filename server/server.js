@@ -56,6 +56,13 @@ app.get('/', async (req, res) => {
   })
 })
 
+// health
+app.get('/health', async (req, res) => {
+  res.status(200).send({
+    message: 'Healthy :-D'
+  })
+})
+
 // (dummy POST route)
 app.post('/', async (req, res) => {  
   //
