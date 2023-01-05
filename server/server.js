@@ -1,13 +1,21 @@
+//// Server setup:
 import express from 'express'
 import * as dotenv from 'dotenv'
 import cors from 'cors'
-import { Configuration, OpenAIApi } from 'openai'
+//// Twitter:
 import Twit from 'twit'
+import needle from 'needle' //HTTP client for twitter
+import got from 'got' //for oauth2 with user contexts
+import * as oauth from 'oauth-1.0a' //for oauth2 with user contexts
+//// OpemAI, chatGPT, and DALL-E:
+import { Configuration, OpenAIApi } from 'openai'
+//import { variations } from 'dalle'
+//// Other packages:
 import path from 'path'
 import axios from 'axios'
 import useragent from 'express-useragent'
 import multer from 'multer'
-//import { variations } from 'dalle'
+
 
 const DEBUG_MODE = false;
 
@@ -305,6 +313,12 @@ app.post('/upload', upload.single('image'), async (req, res) => {
   }
 });
 
+// POST route for twitter callbacks
+app.post('/callback', async (req, res) => {
+  res.status(200).send({
+    message: 'Healthy :-D'
+  })
+})
 
 // start Express server & begin listening for GET and POST requests
 app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'))
