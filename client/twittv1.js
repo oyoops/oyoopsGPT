@@ -6,10 +6,10 @@ dotenv.config()
 
 // Authenticate with oAuth v1
 const T = new Twit({
-    consumer_key: process.env.TWITTER_API_KEY,
-    consumer_secret: process.env.TWITTER_API_SECRET_KEY,
-    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
-    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+    consumer_key: process.env.TWITTER_API_KEY_2,
+    consumer_secret: process.env.TWITTER_API_SECRET_KEY_2,
+    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
+    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
 });
 
 // Tweet every 60 seconds

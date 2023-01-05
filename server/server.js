@@ -63,10 +63,10 @@ const tweetImage = callback => {
   
   // Authenticate with Twitter API v1
   const T = new Twit({
-    consumer_key: process.env.TWITTER_API_KEY,
-    consumer_secret: process.env.TWITTER_API_SECRET_KEY,
-    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
-    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+    consumer_key: process.env.TWITTER_API_KEY_2,
+    consumer_secret: process.env.TWITTER_API_SECRET_KEY_2,
+    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
+    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
   });
 
   //Tweet with media (picture)
@@ -177,10 +177,10 @@ app.post('/', async (req, res) => {
       try {
         // Authenticate with oAuth v1
         const T = new Twit({
-          consumer_key: process.env.TWITTER_API_KEY,
-          consumer_secret: process.env.TWITTER_API_SECRET_KEY,
-          access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
-          access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+          consumer_key: process.env.TWITTER_API_KEY_2,
+          consumer_secret: process.env.TWITTER_API_SECRET_KEY_2,
+          access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
+          access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
         });
         // Note: If Twitter API fails to authenticate, the rest of this block will not run.
 
@@ -268,10 +268,10 @@ app.post('/', async (req, res) => {
     //try {
     //  // Authenticate with oAuth v1
     //  const T = new Twit({
-    //    consumer_key: process.env.TWITTER_API_KEY,
-    //    consumer_secret: process.env.TWITTER_API_SECRET_KEY,
-    //    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
-    //    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET,
+    //    consumer_key: process.env.TWITTER_API_KEY_2,
+    //    consumer_secret: process.env.TWITTER_API_SECRET_KEY_2,
+    //    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
+    //    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
     //  });
 
     //  const twitterUsername = "oyoops";

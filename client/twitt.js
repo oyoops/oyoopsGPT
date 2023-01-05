@@ -4,10 +4,10 @@ import * as dotenv from 'dotenv';
 
 dotenv.config()
 const client = new TwitterApi({
-  consumer_key: process.env.TWITTER_APP_API_KEY,
-  consumer_secret: process.env.TWITTER_APP_API_SECRET_KEY,
-  access_token_key: process.env.TWITTER_OYOOPS_ACCESS_TOKEN,
-  access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET
+  consumer_key: process.env.TWITTER_APP_API_KEY_2,
+  consumer_secret: process.env.TWITTER_APP_API_SECRET_KEY_2,
+  access_token_key: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
+  access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2
 });
 const rwClient = client.readWrite;
 
