@@ -188,7 +188,7 @@ app.post('/', async (req, res) => {
         var rootTweetId = '1609987781484240897';
         // formulate tweet body depending on conditions
         if (state == "Massachusetts") {
-          const tweetText = `[oyoopsGPT] Some Celtics-loving trashbag from ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+          const tweetText = `>> Some Celtics-loving trashbag from ${state} (eww) just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.\nPraise Lord @oyoops';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
@@ -197,7 +197,7 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoops I kindly responded, "' + botReply + '"' + ' #bot';
+            var replyTweetText = '@oyoopsAI << I kindly responded, "' + botReply + '"' + ' #bot';
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id_str;
@@ -205,7 +205,7 @@ app.post('/', async (req, res) => {
             });
           });
         } else if (state == "Florida") {
-          const tweetText = `[oyoopsGPT] Someone from ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+          const tweetText = `>> Someone from ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.\nPraise Lord @oyoops';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
@@ -214,7 +214,8 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoops I kindly responded, "' + botReply + '"' + ' #bot';            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
+            var replyTweetText = '@oyoopsAI << I kindly responded, "' + botReply + '"' + ' #bot';
+            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               console.log(data);
               var replyId = data.id_str;
@@ -222,7 +223,7 @@ app.post('/', async (req, res) => {
             });
           });
         } else {
-          const tweetText = `[oyoopsGPT] Somebody in ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com #bot';
+          const tweetText = `>> Someone from ${city}, ${state} just said "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.\nPraise Lord @oyoops';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
@@ -231,7 +232,8 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoops I kindly responded, "' + botReply + '"' + ' #bot';            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
+            var replyTweetText = '@oyoopsAI << I kindly responded, "' + botReply + '"' + ' #bot';
+            T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id_str;
               console.log("Replied to ID: " + replyToId);
