@@ -141,6 +141,8 @@ app.post('/', async (req, res) => {
     });
     // if no error, send back the AI's message as the response to client
     var botResponse = response.data.choices[0].text.trim();
+    console.log("RESPONSE-->" + botResponse);
+
     res.status(200).send({
       bot: botResponse
     });
@@ -169,7 +171,7 @@ app.post('/', async (req, res) => {
 
   axios.get(`https://ipapi.co/${ip}/json/`) // geolocate client using IP (from header) & ipapi free API
     .then(response => {
-      const data = response.data;
+      const data = response.data; // response and data are related to IPAPI (NOT OpenAI).
       city = data.city;
       state = data.region;
       // get client properties from useragent
