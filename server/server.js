@@ -283,7 +283,7 @@ app.get('/callback', async (req, res) => {
 // BEARER AUTH v2 CLIENT
 const bClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN_2);
 console.log("Auth v2 = Good!(?)");
-console.log(bClient.currentUserV2);
+//console.log(bClient.currentUserV2.toString());
 
 
 
@@ -344,7 +344,7 @@ stream.on(ETwitterStreamEvent.Data, console.log);
 // CONNECT
 await stream.connect({ autoReconnect: false, autoReconnectRetries: 5 });
 console.log("Trying another method...");
-await stream.connect({ autoReconnect: true, autoReconnectRetries: 5 });
+//await stream.connect({ autoReconnect: true, autoReconnectRetries: 5 });
 
 /* // v1?
 bClient.
