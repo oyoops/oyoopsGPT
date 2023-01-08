@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv'
 import cors from 'cors'
 //// Twitter:
 import Twit from 'twit'
-//import * as Twitter from 'twitter-api-v2'
+import * as Twitter from 'twitter-api-v2'
 import { TwitterApi } from 'twitter-api-v2'
 import needle from 'needle' //HTTP client for twitter
 import got from 'got' //for oauth2 with user contexts
