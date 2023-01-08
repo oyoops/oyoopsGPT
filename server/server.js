@@ -381,7 +381,7 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
 
 
 
-// Authenticate with oAuth v2
+/* // Authenticate with oAuth v2
 const client = new Twitter({
   apiKey: process.env.TWITTER_API_KEY_2,
   apiSecret: process.env.TWITTER_API_SECRET_KEY_2,
@@ -414,7 +414,7 @@ client
   .on('error', error => {
     console.error(error);
   });
-  console.log("Stream started!(?)");
+  console.log("Stream started!(?)"); */
   
 /* function pressStart(tweet) {
 
