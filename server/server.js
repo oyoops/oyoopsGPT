@@ -20,7 +20,8 @@ import multer from 'multer'
 import { send } from 'process'
 
 
-
+// load .env vars
+dotenv.config()
 
 
 
@@ -38,7 +39,7 @@ const userClient = new TwitterApi({
 
 const TClient = new TwitterApi({ appKey: TWITTER_API_KEY_2, appSecret: TWITTER_API_SECRET_KEY_2 });
 
-const CALLBACK_URL = "https://ai.oyoops.com/callback"
+const CALLBACK_URL = "https://ai.oyoops.com/callback";
 
 const authLink = await TClient.generateAuthLink(CALLBACK_URL);
 //const authLink = await client.generateAuthLink(CALLBACK_URL, { linkMode: 'authorize' });
@@ -54,8 +55,7 @@ console.log(saveTokenSecret);
 
 const DEBUG_MODE = false;
 
-// load .env vars
-dotenv.config()
+
 
 // define a configuration for an OpenAI instance
 const configuration = new Configuration({
