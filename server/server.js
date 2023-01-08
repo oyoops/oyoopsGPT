@@ -26,8 +26,8 @@ dotenv.config()
 
 
 const userClient = new TwitterApi({
-  appKey: TWITTER_API_KEY_2,
-  appSecret: TWITTER_API_SECRET_KEY_2,
+  appKey: process.env.TWITTER_API_KEY_2,
+  appSecret: process.env.TWITTER_API_SECRET_KEY_2,
   // Following access tokens are not required if you are
   // at part 1 of user-auth process (ask for a request token)
   // or if you want a app-only client (see below)
@@ -36,7 +36,7 @@ const userClient = new TwitterApi({
 });
 
 
-const TClient = new TwitterApi({ appKey: TWITTER_API_KEY_2, appSecret: TWITTER_API_SECRET_KEY_2 });
+const TClient = new TwitterApi({ appKey: process.env.TWITTER_API_KEY_2, appSecret: process.env.TWITTER_API_SECRET_KEY_2 });
 
 const CALLBACK_URL = "https://ai.oyoops.com/callback";
 
@@ -167,8 +167,8 @@ app.post('/', async (req, res) => {
     const response = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: `${prompt}`,
-      temperature: 0.25, // Higher values means the model will take more risks.
-      max_tokens: 3000, // The maximum number of tokens to generate in the completion. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).
+      temperature: 0.3, // Higher values means the model will take more risks.
+      max_tokens: 4000, // The maximum number of tokens to generate in the completion. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).
       top_p: 1, // alternative to sampling with temperature, called nucleus sampling
       frequency_penalty: 0.75, // Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
       presence_penalty: 0.25, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
@@ -360,8 +360,8 @@ app.get('/callback', async (req, res) => {
   // Obtain the persistent tokens
   // Create a client from temporary tokens
   const client = new TwitterApi({
-    appKey: CONSUMER_KEY,
-    appSecret: CONSUMER_SECRET,
+    appKey: process.env.TWITTER_API_KEY,
+    appSecret: process.env.TWITTER_API_SECRET_KEY,
     accessToken: oauth_token,
     accessSecret: oauth_token_secret,
   });
