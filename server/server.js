@@ -278,7 +278,7 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
 }); */
 
 // BEARER AUTH v2 CLIENT
-const bClient = new TwitterApi({TWITTER_BEARER_TOKEN_2});
+const bClient = new TwitterApi({ process.env.TWITTER_BEARER_TOKEN_2 });
 console.log("Auth v2 = Good!(?)");
 
 
