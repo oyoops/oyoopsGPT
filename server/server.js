@@ -207,7 +207,7 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoopsAI ' + botReply;
+            var replyTweetText = '@' + tweetData.user.screen_name + ' ' + botReply;
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id_str;
@@ -224,7 +224,7 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoopsAI ' + botReply;
+            var replyTweetText = '@' + tweetData.user.screen_name + ' ' + botReply;
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               console.log(data);
@@ -242,7 +242,7 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoopsAI ' + botReply;
+            var replyTweetText = '@' + tweetData.user.screen_name + ' ' + botReply;
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id_str;
@@ -260,24 +260,31 @@ app.post('/', async (req, res) => {
       console.log(geolocationOrUseragentError);
     });
 
-    // set up a stream
-    //try {
-    //  // Authenticate with oAuth v1
-    //  const T = new Twit({
-    //    consumer_key: process.env.TWITTER_API_KEY_2,
-    //    consumer_secret: process.env.TWITTER_API_SECRET_KEY_2,
-    //    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
-    //    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
-    //  });
-
-    //  const twitterUsername = "oyoops";
-    //  var stream = T.stream('statuses/filter', { track: twitterUsername });
-    //  stream.on('tweet', pressStart);
-    //} catch (streamError) {
-    //  console.error(streamError);
-    //}
-
 });
+
+
+//
+// STREAM Module
+//
+// set up a stream
+try {
+  // Authenticate with oAuth v1
+  const T = new Twit({
+    consumer_key: process.env.TWITTER_API_KEY_2,
+    consumer_secret: process.env.TWITTER_API_SECRET_KEY_2,
+    access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
+    access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
+  });
+
+  var twitterUsername = "oyoopsAI";
+
+  var stream = T.stream('statuses/filter', { track: twitterUsername });
+  stream.on('tweet', pressStart);
+} catch (streamError) {
+  console.error(streamError);
+}
+
+
 
 //
 // OYOOP-E Module
@@ -312,7 +319,7 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
 
 
 
-/* function pressStart(tweet) {
+function pressStart(tweet) {
 
   var id = tweet.id_str;
   var text = tweet.text;
@@ -329,11 +336,11 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
   console.log(playerTwo);
 
 
-  // checks text of tweet for mention of SNESSoundtracks
+  // checks text of tweet for mention of oyoopsAI
   if (text.includes(twitterUsername) && playerTwo === true) {
 
     // Start a reply back to the sender
-    var replyText = ("@" + name + " Here's your soundtrack: ");
+    var replyText = ("@" + name + " Here's your thing: ");
 
     // Post that tweet
     T.post('statuses/update', { status: replyText, in_reply_to_status_id: id }, gameOver);
@@ -351,4 +358,4 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
     }
   };
 
-} */
+}
