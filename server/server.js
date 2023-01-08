@@ -337,8 +337,9 @@ stream.on(ETwitterStreamEvent.Data, console.log);
 
 // CONNECT
 await stream.connect({ autoReconnect: true, autoReconnectRetries: Infinity });
-// START
-bClient
+
+/* // v1?
+bClient.
   .stream('statuses/filter', { 
     track: 'Skylar Thompson', 
     language: 'en', 
@@ -349,7 +350,8 @@ bClient
   })
   .on('error', error => {
     console.error(error);
-  });
+  }); */
+
 console.log("Stream started(/ended?)");
 
 
