@@ -308,7 +308,6 @@ sendStream() */
 
 console.log("Trying to make a stream...");
 
-const stream = await bClient.v2.searchStream(); // autoConnect = false is ostensibly v2
 
 // Add rules
 const bAddedRules = await bClient.v2.updateStreamRules({
@@ -329,6 +328,7 @@ const bAddedRules = await bClient.v2.updateStreamRules({
 const bRules = await bClient.v2.streamRules();
 console.log(bRules.data.map(rule => rule.id));
 
+const stream = await bClient.v2.searchStream(); // autoConnect = false is ostensibly v2
 
 // Assign event handlers
 
