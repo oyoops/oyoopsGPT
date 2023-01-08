@@ -106,15 +106,8 @@ app.post('/', async (req, res) => {
       presence_penalty: 0.25, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
     });
     var botResponse = response.data.choices[0].text.trim();
-<<<<<<< HEAD
-<<<<<<< HEAD
-    // respond with bot's [raw] response
-=======
-=======
->>>>>>> parent of 318f20f... GREAT
-    console.log("RESPONSE-->" + botResponse);
 
->>>>>>> parent of 318f20f... GREAT
+    // respond with bot's [raw] response
     res.status(200).send({
       bot: botResponse
     });
