@@ -227,6 +227,7 @@ app.post('/', async (req, res) => {
 });
 
 
+// ------------
 // GET route for twitter callbacks
 app.get('/callback', async (req, res) => {
 
@@ -256,9 +257,7 @@ app.get('/callback', async (req, res) => {
     })
     .catch(() => res.status(403).send('Invalid verifier or access tokens!'));
 });
-
-
-// -------------
+// ------------
 
 
 //
@@ -267,25 +266,64 @@ app.get('/callback', async (req, res) => {
 //
 //
 //
-
-
-
-
-// Authenticate with oAuth v2
-// (might I be required to use a Bearer Oauth2client?)
-/* const xclient = new TwitterApi({
-  apiKey: process.env.TWITTER_API_KEY_2,
-  apiSecret: process.env.TWITTER_API_SECRET_KEY_2,
-  accessToken: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
-  accessTokenSecret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
-}); */
 
 // BEARER AUTH v2 CLIENT
 const bClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN_2);
-console.log("Auth v2 = Good!(?)");
-//console.log(bClient.);
+console.log("Auth v2 = Attemped via Bearer");
 
 
+const token = process.env.TWITTER_BEARER_TOKEN_2;
+
+const tStreamURL = 'https://api.twitter.com/2/tweets/sample/stream';
+
+function streamConnect(retryAttempt) {
+
+  const stream = needle.get(tStreamURL, {
+    headers: {
+      "User-Agent": "v2SampleStreamJS",
+      "Authorization": `Bearer ${token}`
+    },
+    timeout: 20000
+  });
+
+  stream.on('data', data => {
+    try {
+      const json = JSON.parse(data);
+      console.log(json);
+      // A successful connection resets retry count.
+      retryAttempt = 0;
+    } catch (e) {
+      // Catches error in case of 401 unauthorized error status.
+      if (data.status === 401) {
+        console.log(data);
+        process.exit(1);
+      } else if (data.detail === "This stream is currently at the maximum allowed connection limit.") {
+        console.log(data.detail)
+        process.exit(1)
+      } else {
+        // Keep alive signal received. Do nothing.
+      }
+    }
+  }).on('err', error => {
+    if (error.code !== 'ECONNRESET') {
+      console.log(error.code);
+      process.exit(1);
+    } else {
+      // This reconnection logic will attempt to reconnect when a disconnection is detected.
+      // To avoid rate limits, this logic implements exponential backoff, so the wait time
+      // will increase if the client cannot reconnect to the stream.
+      setTimeout(() => {
+        console.warn("A connection error occurred. Reconnecting...")
+        streamConnect(++retryAttempt);
+      }, 2 ** retryAttempt);
+    }
+  });
+  return stream;
+}
+
+(async () => {
+  streamConnect(0)
+})();
 
 
 /* Make a custom request
@@ -295,7 +333,6 @@ getStream()
 postStream() or using raw request handler:
 sendStream() */
 
-
 // Sample Stream:
 
 // For v1
@@ -303,10 +340,35 @@ sendStream() */
 // For v2
 //const sampleFilterv2 = await bClient.v2.getStream('tweets/sample/stream');
 
-
-// Try to make a stream
+/* // Try to make a stream
 
 console.log("Trying to make a stream...");
+
+// Get currently active rules
+const bRules = await bClient.v2.streamRules();
+console.log(bRules.data.map(rule => rule.id));
+
+
+async function deleteSearchFilterRules() {
+  try {
+    // Delete all search filter rules
+    await bClient.updateStreamRules({
+      delete: {
+        add: null
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+try {
+
+} catch {
+
+};
+
 
 
 // Add rules
@@ -324,9 +386,10 @@ const bAddedRules = await bClient.v2.updateStreamRules({
 //});
 
 
+
 // Get currently active rules
-const bRules = await bClient.v2.streamRules();
-console.log(bRules.data.map(rule => rule.id));
+const bbRules = await bClient.v2.streamRules();
+console.log(bbRules.data.map(rule => rule.id));
 
 const stream = await bClient.v2.searchStream(); // autoConnect = false is ostensibly v2
 
@@ -360,7 +423,6 @@ bClient.
     console.error(error);
   }); */
 
-console.log("Stream started(/ended?)");
 
 
 
@@ -414,3 +476,4 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
   };
 
 } */
+
