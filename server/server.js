@@ -268,7 +268,7 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
 
 
 // Authenticate with oAuth v2
-const client = new TwitterApi({
+const xclient = new TwitterApi({
   apiKey: process.env.TWITTER_API_KEY_2,
   apiSecret: process.env.TWITTER_API_SECRET_KEY_2,
   accessToken: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
@@ -276,7 +276,7 @@ const client = new TwitterApi({
 });
 console.log("Auth v2 = Good!(?)");
 
-const stream = client.v2.sampleStream({ autoConnect: false });
+const stream = xclient.v2.sampleStream({ autoConnect: false });
 console.log("Trying to start stream...");
 
 // Assign event handlers:
@@ -289,7 +289,7 @@ stream.on(ETwitterStreamEvent.Connected, () => console.log('Stream is started.')
 // Start stream!
 await stream.connect({ autoReconnect: true, autoReconnectRetries: Infinity });
 
-client
+xclient
   .stream('statuses/filter', { track: 'Trevor Lawrence', language: 'en', locations: '-125.00,24.94,-66.93,49.59' })
   .on('data', tweet => {
     console.log('   <---- T-LAW TWEET ALERT! ----> \n' + tweet.text);
