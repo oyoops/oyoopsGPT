@@ -261,9 +261,12 @@ app.get('/callback', async (req, res) => {
 // -------------
 
 
-// start Express server & begin listening for GET and POST requests
-app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'));
-
+//
+//
+//
+//
+//
+//
 
 
 
@@ -342,13 +345,23 @@ bClient
     locations: '-125.00,24.94,-66.93,49.59' 
   })
   .on('data', tweet => {
-    console.log('  <---- (ALERT) POTENTIAL SKYLAR THOMPSON SLANDER! ----> \n' + tweet.text);
+    console.log('  <---- (ALERT) POTENTIAL SKYLAR THOMPSON SLANDER DETECTED! ----> \n' + tweet.text);
   })
   .on('error', error => {
     console.error(error);
   });
+console.log("Stream started(/ended?)");
 
-  console.log("Stream started(/ended?)");
+
+
+
+
+
+// start Express server & begin listening for GET and POST requests
+app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'));
+
+
+
 
   
 /* function pressStart(tweet) {
