@@ -386,7 +386,7 @@ const client = new Twitter({
   apiKey: process.env.TWITTER_API_KEY_2,
   apiSecret: process.env.TWITTER_API_SECRET_KEY_2,
   accessToken: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
-  accessTokenSecret: TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
+  accessTokenSecret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
 });
 console.log("Auth v2 = Good!(?)");
 
