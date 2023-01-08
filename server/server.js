@@ -175,7 +175,6 @@ app.post('/', async (req, res) => {
     });
     // if no error, send back the AI's message as the response to client
     var botResponse = response.data.choices[0].text.trim();
-    console.log("RESPONSE-->" + botResponse);
 
     res.status(200).send({
       bot: botResponse
@@ -253,7 +252,7 @@ app.post('/', async (req, res) => {
             });
           });
         } else if (state == "Florida") {
-          const tweetText = `>> Someone from ${city}, ${state} said, "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+          const tweetText = `>> Someone from ${city} said, "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
@@ -271,7 +270,7 @@ app.post('/', async (req, res) => {
             });
           });
         } else {
-          const tweetText = `>> Someone from ${city}, ${state} said, "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+          const tweetText = `>> Someone from ${city} said, "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
