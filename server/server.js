@@ -263,7 +263,7 @@ app.post('/', async (req, res) => {
 });
 
 
-//
+/* //
 // STREAM Module
 //
 // set up a stream
@@ -282,7 +282,7 @@ try {
   stream.on('tweet', pressStart);
 } catch (streamError) {
   console.error(streamError);
-}
+} */
 
 
 
@@ -319,7 +319,7 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
 
 
 
-function pressStart(tweet) {
+/* function pressStart(tweet) {
 
   var id = tweet.id_str;
   var text = tweet.text;
@@ -358,4 +358,4 @@ function pressStart(tweet) {
     }
   };
 
-}
+} */
