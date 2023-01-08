@@ -306,7 +306,7 @@ sendStream() */
 // Try to make a stream
 
 console.log("Trying to make a stream...");
-const stream = bClient.v2.searchStream({ autoConnect: false, autoReconnectRetries: Infinity }); // autoConnect = false is ostensibly v2
+const stream = await bClient.v2.searchStream({ autoConnect: false, autoReconnectRetries: Infinity }); // autoConnect = false is ostensibly v2
 
 // Add rules
 const bAddRules = await bClient.v2.updateStreamRules({
