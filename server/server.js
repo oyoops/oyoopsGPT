@@ -328,7 +328,7 @@ const bAddedRules = await bClient.v2.updateStreamRules({
 const bRules = await bClient.v2.streamRules();
 console.log(bRules.data.map(rule => rule.id));
 
-const stream = await bClient.v2.searchStream(autoConnect = false); // autoConnect = false is ostensibly v2
+const stream = await bClient.v2.searchStream(); // autoConnect = false is ostensibly v2
 
 // Assign event handlers
 
@@ -342,7 +342,7 @@ stream.on(ETwitterStreamEvent.Error, () => console.error);
 stream.on(ETwitterStreamEvent.Data, console.log);
 
 // CONNECT
-await stream.connect({ autoReconnect: true, autoReconnectRetries: 5 });
+await stream.connect({ autoReconnectRetries: 5 });
 console.log("Trying another method...");
 //await stream.connect({ autoReconnect: true, autoReconnectRetries: 5 });
 
