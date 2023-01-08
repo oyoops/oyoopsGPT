@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv'
 import cors from 'cors'
 //// Twitter:
 import Twit from 'twit'
+import * as Twitter from 'twitter-api-v2'
 import needle from 'needle' //HTTP client for twitter
 import got from 'got' //for oauth2 with user contexts
 import * as oauth from 'oauth-1.0a' //for oauth2 with user contexts
@@ -185,6 +186,7 @@ app.post('/', async (req, res) => {
 
       // Connect to Twitter and tweet the prompt/response
       try {
+
         // Authenticate with oAuth v1
         const T = new Twit({
           consumer_key: process.env.TWITTER_API_KEY_2,
@@ -192,6 +194,17 @@ app.post('/', async (req, res) => {
           access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
           access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
         });
+        console.log("Auth v1 = Good!(?)")
+
+        // Authenticate with oAuth v2
+        const client = new Twitter({
+          apiKey: process.env.TWITTER_API_KEY_2,
+          apiSecret: process.env.TWITTER_API_SECRET_KEY_2,
+          accessToken: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
+          accessTokenSecret: TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
+        });
+        console.log("Auth v2 = Good!(?)")
+
         // Note: If Twitter API fails to authenticate, the rest of this block will not run.
 
         //console.log(rootTweetId);
@@ -262,6 +275,17 @@ app.post('/', async (req, res) => {
 
 });
 
+console.log("Trying to start stream...");
+client
+  .stream('statuses/filter', { track: 'Trevor Lawrence', language: 'en', locations: '-125.00,24.94,-66.93,49.59' })
+  .on('data', tweet => {
+    console.log('   <---- T-LAW TWEET ALERT! ----> \n' + tweet.text);
+  })
+  .on('error', error => {
+    console.error(error);
+  });
+  console.log("Stream started!(?)");
+  
 
 /* //
 // STREAM Module
