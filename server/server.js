@@ -196,14 +196,6 @@ app.post('/', async (req, res) => {
         });
         console.log("Auth v1 = Good!(?)")
 
-        // Authenticate with oAuth v2
-        const client = new Twitter({
-          apiKey: process.env.TWITTER_API_KEY_2,
-          apiSecret: process.env.TWITTER_API_SECRET_KEY_2,
-          accessToken: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
-          accessTokenSecret: TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
-        });
-        console.log("Auth v2 = Good!(?)")
 
         // Note: If Twitter API fails to authenticate, the rest of this block will not run.
 
@@ -275,17 +267,8 @@ app.post('/', async (req, res) => {
 
 });
 
-console.log("Trying to start stream...");
-client
-  .stream('statuses/filter', { track: 'Trevor Lawrence', language: 'en', locations: '-125.00,24.94,-66.93,49.59' })
-  .on('data', tweet => {
-    console.log('   <---- T-LAW TWEET ALERT! ----> \n' + tweet.text);
-  })
-  .on('error', error => {
-    console.error(error);
-  });
-  console.log("Stream started!(?)");
-  
+
+
 
 /* //
 // STREAM Module
@@ -343,6 +326,42 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
 
 
 
+
+// Authenticate with oAuth v2
+const client = new Twitter({
+  apiKey: process.env.TWITTER_API_KEY_2,
+  apiSecret: process.env.TWITTER_API_SECRET_KEY_2,
+  accessToken: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
+  accessTokenSecret: TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
+});
+console.log("Auth v2 = Good!(?)");
+
+const stream = client.v2.sampleStream({ autoConnect: false });
+console.log("Trying to start stream...");
+
+
+
+
+// Assign event handlers:
+
+// Emitted on Tweet
+stream.on(ETwitterStreamEvent.Data, console.log);
+// Emitted only on initial connection success
+stream.on(ETwitterStreamEvent.Connected, () => console.log('Stream is started.'));
+
+// Start stream!
+await stream.connect({ autoReconnect: true, autoReconnectRetries: Infinity });
+
+client
+  .stream('statuses/filter', { track: 'Trevor Lawrence', language: 'en', locations: '-125.00,24.94,-66.93,49.59' })
+  .on('data', tweet => {
+    console.log('   <---- T-LAW TWEET ALERT! ----> \n' + tweet.text);
+  })
+  .on('error', error => {
+    console.error(error);
+  });
+  console.log("Stream started!(?)");
+  
 /* function pressStart(tweet) {
 
   var id = tweet.id_str;
