@@ -348,6 +348,8 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
 // GET route for twitter callbacks
 app.get('/callback', async (req, res) => {
+
+  console.log("GOT A CALLBACK!");
   // Extract tokens from query string
   const { oauth_token, oauth_verifier } = req.query;
   // Get the saved oauth_token_secret from session
