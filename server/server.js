@@ -4,8 +4,8 @@ import * as dotenv from 'dotenv'
 import cors from 'cors'
 //// Twitter:
 import Twit from 'twit'
-import * as Twitter from 'twitter-api-v2'
-import { TwitterApi } from 'twitter-api-v2'
+//import * as Twitter from 'twitter-api-v2'
+import { ETwitterStreamEvent, TweetStream, TwitterApi, ETwitterApiError } from 'twitter-api-v2';
 import needle from 'needle' //HTTP client for twitter
 import got from 'got' //for oauth2 with user contexts
 import * as oauth from 'oauth-1.0a' //for oauth2 with user contexts
@@ -269,37 +269,86 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
 
 
 // Authenticate with oAuth v2
-const xclient = new TwitterApi({
+// (might I be required to use a Bearer Oauth2client?)
+/* const xclient = new TwitterApi({
   apiKey: process.env.TWITTER_API_KEY_2,
   apiSecret: process.env.TWITTER_API_SECRET_KEY_2,
   accessToken: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
   accessTokenSecret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
-});
+}); */
+
+// BEARER AUTH v2 CLIENT
+const bClient = new TwitterApi({TWITTER_BEARER_TOKEN_2});
 console.log("Auth v2 = Good!(?)");
 
-const stream = xclient.v2.sampleStream({ autoConnect: false });
-console.log("Trying to start stream...");
 
-// Assign event handlers:
+// Add rules
+//const bAddRules = await bClient.v2.updateStreamRules({
+  //add: [
+  //  { value: 'Skylar Thompson', tag: 'st' },
+  //  { value: 'Josh Allen', tag: 'ja' },
+  //],
+//});
 
-// Emitted on Tweet
+// Delete rules
+//const bDeleteRules = await bClient.v2.updateStreamRules({
+  //delete: {
+  //  ids: ['281646', '1534843'],
+  //},
+//});
+
+
+// Get currently active rules
+//const bRules = await bClient.v2.streamRules();
+//console.log(bRules.data.map(rule => rule.id));
+
+
+
+
+/* Make a custom request
+If you know endpoint and parameters (or you don't want them to be parsed), you can make raw requests using shortcuts by HTTP methods:
+
+getStream()
+postStream() or using raw request handler:
+sendStream() */
+
+
+// Sample Stream:
+
+// For v1
+//const streamFilter = await bClient.v1.stream.getStream('statuses/filter.json', { track: 'JavaScript,TypeScript' });
+// For v2
+//const sampleFilterv2 = await bClient.v2.getStream('tweets/sample/stream');
+
+
+// Try to make a stream
+console.log("Trying to make a stream...");
+const stream = bClient.v2.searchStream({ autoConnect: false, autoReconnectRetries: Infinity }); // autoConnect = false is ostensibly v2
+
+// Assign event handlers
+
+// --> when it connects successfully:
+stream.on(ETwitterStreamEvent.Connected, () => console.log('Stream started !!!!!!!!!!!!!!!!!!!!!'));
+// --> when it finds a tweet that matches its rules:
 stream.on(ETwitterStreamEvent.Data, console.log);
-// Emitted only on initial connection success
-stream.on(ETwitterStreamEvent.Connected, () => console.log('Stream is started.'));
 
-// Start stream!
+// CONNECT
 await stream.connect({ autoReconnect: true, autoReconnectRetries: Infinity });
-
-xclient
-  .stream('statuses/filter', { track: 'Trevor Lawrence', language: 'en', locations: '-125.00,24.94,-66.93,49.59' })
+// START
+bClient
+  .stream('statuses/filter', { 
+    track: 'Skylar Thompson', 
+    language: 'en', 
+    locations: '-125.00,24.94,-66.93,49.59' 
+  })
   .on('data', tweet => {
-    console.log('   <---- T-LAW TWEET ALERT! ----> \n' + tweet.text);
+    console.log('  <---- (ALERT) POTENTIAL SKYLAR THOMPSON SLANDER! ----> \n' + tweet.text);
   })
   .on('error', error => {
     console.error(error);
   });
 
-  console.log("Stream started!(?)");
+  console.log("Stream started(/ended?)");
 
   
 /* function pressStart(tweet) {
