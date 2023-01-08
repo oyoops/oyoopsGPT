@@ -207,7 +207,7 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoopsAI << I said, "' + botReply + '"' +'.';
+            var replyTweetText = '@oyoopsAI ' + botReply;
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id_str;
@@ -224,7 +224,7 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoopsAI << I said, "' + botReply + '"' + '.';
+            var replyTweetText = '@oyoopsAI ' + botReply;
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               console.log(data);
@@ -242,7 +242,7 @@ app.post('/', async (req, res) => {
             var replyToId = rootTweetId;
             var botReply = botResponse.substring(0,220).trim();
             if (botReply.length === 220) {botReply = botReply.substring(0, 214) + " (...)"}
-            var replyTweetText = '@oyoopsAI << I said, "' + botReply + '"' + '.';
+            var replyTweetText = '@oyoopsAI ' + botReply;
             T.post('statuses/update', { status: `${replyTweetText}`, in_reply_to_status_id: `${replyToId}` }, function(err, data, response) {
               console.log("Replied: '" + data.text) + "'";
               var replyId = data.id_str;
