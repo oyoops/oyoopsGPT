@@ -273,7 +273,6 @@ console.log("Auth v2 = Attemped via Bearer");
 
 
 const token = process.env.TWITTER_BEARER_TOKEN_2;
-
 const tStreamURL = 'https://api.twitter.com/2/tweets/sample/stream';
 
 function streamConnect(retryAttempt) {
@@ -283,7 +282,7 @@ function streamConnect(retryAttempt) {
       "User-Agent": "v2SampleStreamJS",
       "Authorization": `Bearer ${token}`
     },
-    timeout: 20000
+    timeout: 21000
   });
 
   stream.on('data', data => {
@@ -298,8 +297,9 @@ function streamConnect(retryAttempt) {
         console.log(data);
         process.exit(1);
       } else if (data.detail === "This stream is currently at the maximum allowed connection limit.") {
-        console.log(data.detail)
-        process.exit(1)
+        console.log(data);
+        console.log(data.detail);
+        process.exit(1);
       } else {
         // Keep alive signal received. Do nothing.
       }
