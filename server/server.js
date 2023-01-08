@@ -107,8 +107,11 @@ app.post('/', async (req, res) => {
     });
     var botResponse = response.data.choices[0].text.trim();
 <<<<<<< HEAD
+<<<<<<< HEAD
     // respond with bot's [raw] response
 =======
+=======
+>>>>>>> parent of 318f20f... GREAT
     console.log("RESPONSE-->" + botResponse);
 
 >>>>>>> parent of 318f20f... GREAT
