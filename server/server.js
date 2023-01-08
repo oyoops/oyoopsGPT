@@ -285,27 +285,6 @@ const bClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN_2);
 console.log("Auth v2 = Good!(?)");
 
 
-// Add rules
-//const bAddRules = await bClient.v2.updateStreamRules({
-  //add: [
-  //  { value: 'Skylar Thompson', tag: 'st' },
-  //  { value: 'Josh Allen', tag: 'ja' },
-  //],
-//});
-
-// Delete rules
-//const bDeleteRules = await bClient.v2.updateStreamRules({
-  //delete: {
-  //  ids: ['281646', '1534843'],
-  //},
-//});
-
-
-// Get currently active rules
-//const bRules = await bClient.v2.streamRules();
-//console.log(bRules.data.map(rule => rule.id));
-
-
 
 
 /* Make a custom request
@@ -325,8 +304,29 @@ sendStream() */
 
 
 // Try to make a stream
+
 console.log("Trying to make a stream...");
 const stream = bClient.v2.searchStream({ autoConnect: false, autoReconnectRetries: Infinity }); // autoConnect = false is ostensibly v2
+
+// Add rules
+const bAddRules = await bClient.v2.updateStreamRules({
+  add: [
+    { value: 'Skylar Thompson', tag: 'st' },
+  ],
+});
+
+// Delete rules
+//const bDeleteRules = await bClient.v2.updateStreamRules({
+  //delete: {
+  //  ids: ['281646', '1534843'],
+  //},
+//});
+
+
+// Get currently active rules
+const bRules = await bClient.v2.streamRules();
+console.log(bRules.data.map(rule => rule.id));
+
 
 // Assign event handlers
 
