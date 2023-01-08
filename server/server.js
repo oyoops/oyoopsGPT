@@ -283,6 +283,7 @@ app.get('/callback', async (req, res) => {
 // BEARER AUTH v2 CLIENT
 const bClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN_2);
 console.log("Auth v2 = Good!(?)");
+console.log(bClient.currentUserV2);
 
 
 
@@ -309,14 +310,14 @@ console.log("Trying to make a stream...");
 const stream = await bClient.v2.searchStream({ autoConnect: false, autoReconnectRetries: Infinity }); // autoConnect = false is ostensibly v2
 
 // Add rules
-const bAddRules = await bClient.v2.updateStreamRules({
+const bAddedRules = await bClient.v2.updateStreamRules({
   add: [
     { value: 'Skylar Thompson', tag: 'st' },
   ],
 });
 
 // Delete rules
-//const bDeleteRules = await bClient.v2.updateStreamRules({
+//const bDeletedRules = await bClient.v2.updateStreamRules({
   //delete: {
   //  ids: ['281646', '1534843'],
   //},
@@ -332,11 +333,15 @@ console.log(bRules.data.map(rule => rule.id));
 
 // --> when it connects successfully:
 stream.on(ETwitterStreamEvent.Connected, () => console.log('Stream started !!!!!!!!!!!!!!!!!!!!!'));
+// --> when it fails to connect initially:
+stream.on(ETwitterStreamEvent.ConnectError, () => console.log("Failed to connect..."));
+// --> when unknown error occurs:
+stream.on(ETwitterStreamEvent.Error, () => console.log("Unknown error..."));
 // --> when it finds a tweet that matches its rules:
 stream.on(ETwitterStreamEvent.Data, console.log);
 
 // CONNECT
-await stream.connect({ autoReconnect: true, autoReconnectRetries: Infinity });
+await stream.connect({ autoReconnect: true, autoReconnectRetries: 5 });
 
 /* // v1?
 bClient.
