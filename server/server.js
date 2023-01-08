@@ -4,7 +4,8 @@ import * as dotenv from 'dotenv'
 import cors from 'cors'
 //// Twitter:
 import Twit from 'twit'
-import * as Twitter from 'twitter-api-v2'
+//import * as Twitter from 'twitter-api-v2'
+import { TwitterApi } from 'twitter-api-v2'
 import needle from 'needle' //HTTP client for twitter
 import got from 'got' //for oauth2 with user contexts
 import * as oauth from 'oauth-1.0a' //for oauth2 with user contexts
@@ -16,6 +17,39 @@ import path from 'path'
 import axios from 'axios'
 import useragent from 'express-useragent'
 import multer from 'multer'
+import { send } from 'process'
+
+
+
+
+
+
+
+const userClient = new TwitterApi({
+  appKey: TWITTER_API_KEY_2,
+  appSecret: TWITTER_API_SECRET_KEY_2,
+  // Following access tokens are not required if you are
+  // at part 1 of user-auth process (ask for a request token)
+  // or if you want a app-only client (see below)
+  //accessToken: TWITTER_OYOOPS_ACCESS_TOKEN_2,
+  //accessSecret: TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
+});
+
+
+const TClient = new TwitterApi({ appKey: TWITTER_API_KEY_2, appSecret: TWITTER_API_SECRET_KEY_2 });
+
+const CALLBACK_URL = "https://ai.oyoops.com/callback"
+
+const authLink = await TClient.generateAuthLink(CALLBACK_URL);
+//const authLink = await client.generateAuthLink(CALLBACK_URL, { linkMode: 'authorize' });
+const sendURL = authLink.url;
+var saveToken = authLink.oauth_token;
+var saveTokenSecret = authLink.oauth_token_secret;
+console.log(sendURL);
+console.log(saveToken);
+console.log(saveTokenSecret);
+
+
 
 
 const DEBUG_MODE = false;
@@ -313,12 +347,33 @@ app.post('/upload', upload.single('image'), async (req, res) => {
   }
 });
 
-// POST route for twitter callbacks
-app.post('/callback', async (req, res) => {
-  res.status(200).send({
-    message: 'Healthy :-D'
-  })
-})
+// GET route for twitter callbacks
+app.get('/callback', async (req, res) => {
+  // Extract tokens from query string
+  const { oauth_token, oauth_verifier } = req.query;
+  // Get the saved oauth_token_secret from session
+  const { oauth_token_secret } = req.session;
+
+  if (!oauth_token || !oauth_verifier || !oauth_token_secret) {
+    return res.status(400).send('You denied the app or your session expired!');
+  }
+
+  // Obtain the persistent tokens
+  // Create a client from temporary tokens
+  const client = new TwitterApi({
+    appKey: CONSUMER_KEY,
+    appSecret: CONSUMER_SECRET,
+    accessToken: oauth_token,
+    accessSecret: oauth_token_secret,
+  });
+
+  client.login(oauth_verifier)
+    .then(({ client: loggedClient, accessToken, accessSecret }) => {
+      // loggedClient is an authenticated client in behalf of some user
+      // Store accessToken & accessSecret somewhere
+    })
+    .catch(() => res.status(403).send('Invalid verifier or access tokens!'));
+});
 
 // start Express server & begin listening for GET and POST requests
 app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'))
