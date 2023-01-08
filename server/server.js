@@ -307,7 +307,8 @@ sendStream() */
 // Try to make a stream
 
 console.log("Trying to make a stream...");
-const stream = await bClient.v2.searchStream({ autoConnect: false, autoReconnectRetries: Infinity }); // autoConnect = false is ostensibly v2
+
+const stream = await bClient.v2.searchStream(); // autoConnect = false is ostensibly v2
 
 // Add rules
 const bAddedRules = await bClient.v2.updateStreamRules({
@@ -334,13 +335,15 @@ console.log(bRules.data.map(rule => rule.id));
 // --> when it connects successfully:
 stream.on(ETwitterStreamEvent.Connected, () => console.log('Stream started !!!!!!!!!!!!!!!!!!!!!'));
 // --> when it fails to connect initially:
-stream.on(ETwitterStreamEvent.ConnectError, () => console.log("Failed to connect..."));
+stream.on(ETwitterStreamEvent.ConnectError, () => console.error);
 // --> when unknown error occurs:
-stream.on(ETwitterStreamEvent.Error, () => console.log("Unknown error..."));
+stream.on(ETwitterStreamEvent.Error, () => console.error);
 // --> when it finds a tweet that matches its rules:
 stream.on(ETwitterStreamEvent.Data, console.log);
 
 // CONNECT
+await stream.connect({ autoReconnect: false, autoReconnectRetries: 5 });
+console.log("Trying another method...");
 await stream.connect({ autoReconnect: true, autoReconnectRetries: 5 });
 
 /* // v1?
