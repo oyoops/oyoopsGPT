@@ -13,6 +13,7 @@ import * as oauth from 'oauth-1.0a' //for oauth2 with user contexts
 import { Configuration, OpenAIApi } from 'openai'
 //import { variations } from 'dalle'
 //// Other packages:
+//import qs from 'qs'
 import path from 'path'
 import axios from 'axios'
 import useragent from 'express-useragent'
@@ -21,8 +22,9 @@ import { send } from 'process'
 
 const DEBUG_MODE = false;
 dotenv.config()
+const CALLBACK_URL = "https://ai.oyoops.com/callback";
 
-const userClient = new TwitterApi({
+/* const userClient = new TwitterApi({
   appKey: process.env.TWITTER_API_KEY_2,
   appSecret: process.env.TWITTER_API_SECRET_KEY_2,
   //accessToken: TWITTER_OYOOPS_ACCESS_TOKEN_2,
@@ -32,25 +34,22 @@ const userClient = new TwitterApi({
 const TClient = new TwitterApi({
     appKey: process.env.TWITTER_API_KEY_2,
     appSecret: process.env.TWITTER_API_SECRET_KEY_2,
-});
-
-const CALLBACK_URL = "https://ai.oyoops.com/callback";
+}); */
 
 // Generate auth link
 const authLink = await TClient.generateAuthLink(CALLBACK_URL);
 const sendURL = authLink.url;
 var saveToken = authLink.oauth_token;
 var saveTokenSecret = authLink.oauth_token_secret;
-// (auth link debug)
+/* // (auth link debug)
 console.log("sendURL________=" + sendURL);
 console.log("saveToken______=" + saveToken);
-console.log("saveTokenSecret=" + saveTokenSecret);
+console.log("saveTokenSecret=" + saveTokenSecret); */
 
 // define a configuration for an OpenAI instance
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
 // create the OpenAI instance
 const openai = new OpenAIApi(configuration);
 
@@ -89,7 +88,7 @@ app.get('/health', async (req, res) => {
   })
 })
 
-// (dummy POST route)
+// (primary POST route)
 app.post('/', async (req, res) => {  
   //
   // OpenAI Module
@@ -136,7 +135,8 @@ app.post('/', async (req, res) => {
       browser = req.useragent.browser;
       os = req.useragent.os;
       device = req.useragent.isMobile ? 'mobile' : 'desktop';
-      // log new prompts as received
+
+      // log new prompts as they are received
       console.log(`[ NEW PROMPT ] City: ${city}, State: ${state}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
       console.log(`[  HAS BEEN  ] >> ${prompt}`);
       console.log(`[  RECEIVED  ] @@ ${botResponse}`);
@@ -152,7 +152,7 @@ app.post('/', async (req, res) => {
           access_token: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_2,
           access_token_secret: process.env.TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
         });
-        console.log("Auth v1 = Good!(?)")
+        console.log("Auth v1 = Attempted...");
 
         var rootTweetId = '1609987781484240897'; // only in case of error
 
@@ -267,12 +267,18 @@ app.get('/callback', async (req, res) => {
 //
 //
 
+
+
 // BEARER AUTH v2 CLIENT
-const bClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN_2);
-console.log("Auth v2 = Attemped via Bearer");
-
-
 const token = process.env.TWITTER_BEARER_TOKEN_2;
+const bClient = new TwitterApi(token);
+console.log("Auth v2 = Attemped via bearer...");
+
+// ...
+const tSampleStreamURL = 'https://api.twitter.com/2/tweets/sample/stream'; // 1% of tweets
+const tRecentURL = 'https://api.twitter.com/2/tweets/search/recent'; // last 7 days of timeline
+//const tFilterURL = 'https://api.twitter.com/2/tweets/sample/stream';
+//  v
 const tStreamURL = 'https://api.twitter.com/2/tweets/sample/stream';
 
 function streamConnect(retryAttempt) {
@@ -435,6 +441,9 @@ app.listen(5000, () => console.log('oyoops AI server started on http://localhost
 
 
 
+/* function readLatestTweets(user) {
+
+} */
   
 /* function pressStart(tweet) {
 
