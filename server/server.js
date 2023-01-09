@@ -287,14 +287,19 @@ console.log("Auth v2 = Attemped via bearer...");
 async function startStream(userName){
   try {
     const stream = await bClient.v2.searchStream();
-
+    
+    // delete existing rules
+    const rules = await bClient.v2.getStreamRules();
+    console.log('Current rules:', rules.data);
     const ids = rules.data.map(rule => rule.id);
+
     await bClient.v2.updateStreamRules({
       delete: [
         { ids: ids }
       ],
       add: [
-        { value: `from:${userName}`, tag: userName },
+        //{ value: `from:${userName}`, tag: userName },
+        { value: `@oyoops`, tag: 'oyoops' },
       ],
     });
     
@@ -310,7 +315,9 @@ async function startStream(userName){
     
     stream.on(
       ETwitterStreamEvent.Data,
-      eventData => console.log(eventData),
+      eventData => {
+        console.log(eventData);
+      }
     );
     
     stream.on(
@@ -319,6 +326,7 @@ async function startStream(userName){
     );
   
     stream.autoReconnect = true;
+
   } catch (e) {
     console.error(e);
     console.log("failure...");
