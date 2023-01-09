@@ -316,7 +316,25 @@ async function startStream(userName){
     stream.on(
       ETwitterStreamEvent.Data,
       eventData => {
-        console.log(eventData);
+        // Authenticate using a new instance of the Twitter v1 API
+        const client = new Twitter({
+          consumer_key: process.env.TWITTER_CONSUMER_KEY,
+          consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+          access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+          access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+        });
+        // Respond to the author of the matching tweet with a generic reply
+        client.post('statuses/update', {
+          status: 'Thank you for mentioning @oyoopsAI!',
+          in_reply_to_status_id: eventData.id_str,
+        }, function(error, tweet, response) {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log(`Successfully responded to tweet ${eventData.id_str}`);
+          }
+          console.log(eventData);
+        });
       }
     );
     
