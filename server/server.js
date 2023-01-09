@@ -161,7 +161,10 @@ app.post('/', async (req, res) => {
 
         // compose tweet depending on location
         if (state == "Massachusetts") {
-          const tweetText = `>> Some Celtics-loving trashbag from ${city} (a shithole) said, "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+          const rawPrompt = req.body.prompt.substring(0,210).trim();
+          if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
+          const fixedPrompt = rawPrompt;
+          const tweetText = `>> Some Celtics-loving trashbag from ${city} (a shithole) said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
@@ -179,7 +182,10 @@ app.post('/', async (req, res) => {
           });
 
         } else if (state == "Florida") {
-          const tweetText = `>> Someone from ${city}, ${state} said, "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+          const rawPrompt = req.body.prompt.substring(0,210).trim();
+          if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
+          const fixedPrompt = rawPrompt;
+          const tweetText = `>> Someone from ${city}, ${state} said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
@@ -198,7 +204,10 @@ app.post('/', async (req, res) => {
           });
 
         } else {
-          const tweetText = `>> Someone from ${city}, ${state} said, "` + req.body.prompt.trim() + '" to me on ai.oyoops.com.';
+          const rawPrompt = req.body.prompt.substring(0,210).trim();
+          if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
+          const fixedPrompt = rawPrompt;
+          const tweetText = `>> Someone from ${city}, ${state} said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
