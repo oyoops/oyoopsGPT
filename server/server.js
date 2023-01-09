@@ -372,7 +372,7 @@ async function setRules() {
 
 }
 
-// connect to filtered stream now
+// connect to filtered stream 
 const tStreamURL = tFilteredStreamURL;
 function streamConnect(retryAttempt) {
   const stream = needle.get(tStreamURL, {
