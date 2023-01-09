@@ -186,7 +186,7 @@ app.post('/', async (req, res) => {
           
           try {
             // Get Timeline
-            const tUser = "oyoops";
+            let tUser = "oyoops";
             let respp = "";
             T.get('statuses/user_timeline', { screen_name: `${tUser}`, count: `50`, exclude_replies: `true`, include_rts: `false` }, function(err, timelineData, response) {
               for (const tStatus in timelineData) {
