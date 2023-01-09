@@ -288,8 +288,8 @@ async function startStream(userName){
   try {
     const stream = await bClient.v2.searchStream();
     
-    // delete existing rules
-    const rules = await bClient.v2.getStreamRules();
+    // delete all existing rules
+    const rules = await getAllRules();
     console.log('Current rules:', rules.data);
     const ids = rules.data.map(rule => rule.id);
 
@@ -643,9 +643,40 @@ bClient.
 
 
 
+async function getAllRules() {
+  const response = await needle('get', rulesURL, {
+      headers: {
+          "authorization": `Bearer ${token}`
+      }
+  })
+  if (response.statusCode !== 200) {
+      console.log("Error:", response.statusMessage, response.statusCode)
+      throw new Error(response.body);
+  }
+  return (response.body);
+}
 
-
-
+async function deleteAllRules(rules) {
+  if (!Array.isArray(rules.data)) {
+      return null;
+  }
+  const ids = rules.data.map(rule => rule.id);
+  const data = {
+      "delete": {
+          "ids": ids
+      }
+  }
+  const response = await needle('post', rulesURL, data, {
+      headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`
+      }
+  })
+  if (response.statusCode !== 200) {
+      throw new Error(response.body);
+  }
+  return (response.body);
+}
 
 // start Express server & begin listening for GET and POST requests
 app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'));
