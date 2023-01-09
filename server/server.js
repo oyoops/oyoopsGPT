@@ -285,12 +285,10 @@ const bClient = new TwitterApi(token);
 console.log("Auth v2 = Attemped via bearer...");
 
 // ...
-const tSampleStreamURL = 'https://api.twitter.com/2/tweets/sample/stream'; // 1% of tweets
 const tRecentURL = 'https://api.twitter.com/2/tweets/search/recent'; // last 7 days of timeline
-//const tFilterURL = 'https://api.twitter.com/2/tweets/sample/stream';
-//  v
-const tStreamURL = 'https://api.twitter.com/2/tweets/sample/stream';
+const tSampleURL = 'https://api.twitter.com/2/tweets/sample/stream'; // 1% sample of all tweets
 
+const tStreamURL = tSampleURL;
 function streamConnect(retryAttempt) {
 
   const stream = needle.get(tStreamURL, {
@@ -300,6 +298,7 @@ function streamConnect(retryAttempt) {
     },
     timeout: 21000
   });
+  
 
   stream.on('data', data => {
     try {
