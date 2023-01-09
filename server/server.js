@@ -30,11 +30,12 @@ const CALLBACK_URL = "https://ai.oyoops.com/callback";
   //accessToken: TWITTER_OYOOPS_ACCESS_TOKEN_2,
   //accessSecret: TWITTER_OYOOPS_ACCESS_TOKEN_SECRET_2,
 });
+*/
 
 const TClient = new TwitterApi({
     appKey: process.env.TWITTER_API_KEY_2,
     appSecret: process.env.TWITTER_API_SECRET_KEY_2,
-}); */
+});
 
 // Generate auth link
 const authLink = await TClient.generateAuthLink(CALLBACK_URL);
