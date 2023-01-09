@@ -284,8 +284,62 @@ const token = process.env.TWITTER_BEARER_TOKEN_2;
 const bClient = new TwitterApi(token);
 console.log("Auth v2 = Attemped via bearer...");
 
+async function startStream(userName){
+  try {
+    const stream = await bClient.v2.searchStream();
+
+    const ids = rules.data.map(rule => rule.id);
+    await bClient.v2.updateStreamRules({
+      delete: [
+        { ids: ids }
+      ],
+      add: [
+        { value: `from:${userName}`, tag: userName },
+      ],
+    });
+    
+    stream.on(
+      ETwitterStreamEvent.ConnectionError,
+      err => console.log('Connection error!', err),
+    );
+    
+    stream.on(
+      ETwitterStreamEvent.ConnectionClosed,
+      () => console.log('Connection has been closed.'),
+    );
+    
+    stream.on(
+      ETwitterStreamEvent.Data,
+      eventData => console.log(eventData),
+    );
+    
+    stream.on(
+      ETwitterStreamEvent.Connected,
+      eventData => console.log("Successful stream connection! :-D"),
+    );
+  
+    stream.autoReconnect = true;
+  } catch (e) {
+    console.error(e);
+    console.log("failure...");
+  };
+
+}
+
+async function callStartStream() {
+  try {
+    const stream = await startStream("oyoops");
+    // Do something with the stream here, if needed
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 
+
+
+
+/* 
 
 // ...
 const tRecentURL = 'https://api.twitter.com/2/tweets/search/recent'; // last 7 days of timeline
@@ -456,7 +510,7 @@ function streamConnect(retryAttempt) {
 
 
 
-
+ */
 
 
 
@@ -570,7 +624,7 @@ bClient.
 // start Express server & begin listening for GET and POST requests
 app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'));
 
-
+callStartStream();
 
 
 /* function readLatestTweets(user) {
