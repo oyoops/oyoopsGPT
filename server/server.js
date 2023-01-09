@@ -284,21 +284,104 @@ const token = process.env.TWITTER_BEARER_TOKEN_2;
 const bClient = new TwitterApi(token);
 console.log("Auth v2 = Attemped via bearer...");
 
+
+
+
 // ...
 const tRecentURL = 'https://api.twitter.com/2/tweets/search/recent'; // last 7 days of timeline
 const tSampleURL = 'https://api.twitter.com/2/tweets/sample/stream'; // 1% sample of all tweets
+const tFilteredStreamURL = 'https://api.twitter.com/2/tweets/search/stream'; // <--- for filtered streams with rules
+//const streamURL = 'https://api.twitter.com/2/tweets/search/stream';
+const rulesURL = 'https://api.twitter.com/2/tweets/search/stream/rules';
 
-const tStreamURL = tSampleURL;
+
+// define filter rules
+const rules = [{
+    'value': 'Aaron Rodgers -is:retweet', // has:images -is:retweet',
+    'tag': 'rodgers'
+  },
+  {
+    'value': 'Jared Goff -is:retweet', // -grumpy',
+    'tag': 'goff'
+  },
+];
+
+async function getAllRules() {
+
+  const response = await needle('get', rulesURL, {
+      headers: {
+          "authorization": `Bearer ${token}`
+      }
+  })
+
+  if (response.statusCode !== 200) {
+      console.log("Error:", response.statusMessage, response.statusCode)
+      throw new Error(response.body);
+  }
+
+  return (response.body);
+}
+
+async function deleteAllRules(rules) {
+
+  if (!Array.isArray(rules.data)) {
+      return null;
+  }
+
+  const ids = rules.data.map(rule => rule.id);
+
+  const data = {
+      "delete": {
+          "ids": ids
+      }
+  }
+
+  const response = await needle('post', rulesURL, data, {
+      headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`
+      }
+  })
+
+  if (response.statusCode !== 200) {
+      throw new Error(response.body);
+  }
+
+  return (response.body);
+
+}
+
+async function setRules() {
+
+  const data = {
+      "add": rules
+  }
+
+  const response = await needle('post', rulesURL, data, {
+      headers: {
+          "content-type": "application/json",
+          "authorization": `Bearer ${token}`
+      }
+  })
+
+  if (response.statusCode !== 201) {
+      throw new Error(response.body);
+  }
+
+  return (response.body);
+
+}
+
+// connect to filtered stream now
+const tStreamURL = tFilteredStreamURL;
 function streamConnect(retryAttempt) {
-
   const stream = needle.get(tStreamURL, {
     headers: {
-      "User-Agent": "v2SampleStreamJS",
+      "User-Agent": "v2FilterStreamJS",
       "Authorization": `Bearer ${token}`
     },
     timeout: 21000
   });
-  
 
   stream.on('data', data => {
     try {
@@ -336,10 +419,40 @@ function streamConnect(retryAttempt) {
   return stream;
 }
 
-/* (async () => {
-  streamConnect(0)
+
+////
+////
+////
+//////
+////// START FILTERED STREAM !
+//////
+////
+////
+////
+
+(async () => {
+  let currentRules;
+
+  try {
+      // Gets the complete list of rules currently applied to the stream
+      currentRules = await getAllRules();
+
+      // Delete all rules. Comment the line below if you want to keep your existing rules.
+      await deleteAllRules(currentRules);
+
+      // Add rules to the stream. Comment the line below if you don't want to add new rules.
+      await setRules();
+
+  } catch (e) {
+      console.error(e);
+      console.log(currentRules);
+      //process.exit(1);
+  }
+
+  // Listen to the stream.
+  streamConnect(0);
+
 })();
- */
 
 
 
