@@ -337,9 +337,19 @@ function streamConnect(retryAttempt) {
   return stream;
 }
 
-(async () => {
+/* (async () => {
   streamConnect(0)
 })();
+ */
+
+
+
+
+
+
+
+
+
 
 
 /* Make a custom request
