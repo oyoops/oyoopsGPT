@@ -19,6 +19,7 @@ import axios from 'axios'
 import useragent from 'express-useragent'
 import multer from 'multer'
 import { send } from 'process'
+import { COLLECTION_FORMATS } from 'openai/dist/base';
 
 const DEBUG_MODE = false;
 dotenv.config()
@@ -182,6 +183,24 @@ app.post('/', async (req, res) => {
           });
 
         } else if (state == "Florida") {
+          
+          try {
+            // Get Timeline
+            const tUser = "oyoops";
+            let respp = "";
+            T.get('statuses/user_timeline', { screen_name: `${tUser}`, count: `50`, exclude_replies: `true`, include_rts: `false` }, function(err, timelineData, response) {
+              for (const tStatus in timelineData) {
+                console.log(tStatus.text);
+                respp = respp + "{" + tStatus.text + "}, ";
+              }
+            });
+            console.log(respp);
+          } catch (streamErr) { 
+            console.log("Stream fail.");
+            console.error(streamError);
+          }
+
+          
           const rawPrompt = req.body.prompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
