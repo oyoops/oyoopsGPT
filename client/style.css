@@ -155,7 +155,7 @@ form img {
 }
 
 input[type=checkbox] {
-  display:none;
+  display:inline-block;
 }
 
 input[type=checkbox] + label:before {
