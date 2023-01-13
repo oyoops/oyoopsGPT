@@ -8,20 +8,23 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>oyoopsGPT - The Not-Nice AI</title>
+    <title>Convo with oyoops AI</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
 
     <div id="app">
       <div id="chat_container"></div>
-    
+      
       <form>
-        <textarea name="prompt" rows="1" cols="1" placeholder="GM, I'm oyoops AI. Ask me something!"></textarea>
+        <textarea name="prompt" rows="1" cols="1" placeholder="Where do babies come from?"></textarea>
+        <input type="checkbox" id="switch" name="switch" value="150" onchange="updateSwitchValue(this)">
         <button type="submit"><img src="assets/send.svg" /></button>
       </form>
+
     </div>
     
+    <script type="module" src="iq_switch.js"></script>
     <script type="module" src="script.js"></script>
   
   </body>
