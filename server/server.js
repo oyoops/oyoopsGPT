@@ -96,14 +96,18 @@ app.post('/', async (req, res) => {
   // OpenAI Module
   //
   try {
+    var iq = req.body.prefix;
     var prompt = req.body.prompt;
+    var reportedPrompt = prompt;
+    var actualPrompt = 'Pretend to be a person with IQ of ' + iq + ". " + reportedPrompt;
+    
     const response = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: `${prompt}`,
-      temperature: 0.3, // Higher values = model will take more risks.
+      prompt: `${actualPrompt}`,
+      temperature: 0.2, // Higher values = model will take more risks.
       max_tokens: 4000, // Maximum number of tokens to generate in the completion. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).
       top_p: 1, // alternative to sampling with temperature, called nucleus sampling
-      frequency_penalty: 0.75, // Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+      frequency_penalty: 0.50, // Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
       presence_penalty: 0.25, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
     });
     var botResponse = response.data.choices[0].text.trim();
@@ -140,7 +144,7 @@ app.post('/', async (req, res) => {
 
       // log new prompts as they are received
       console.log(`[ NEW PROMPT ] City: ${city}, State: ${state}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
-      console.log(`[  HAS BEEN  ] >> ${prompt}`);
+      console.log(`[  HAS BEEN  ] >> ${reportedPrompt}`);
       console.log(`[  RECEIVED  ] @@ ${botResponse}`);
 
       //
@@ -162,7 +166,7 @@ app.post('/', async (req, res) => {
 
         // compose tweet depending on location
         if (state == "Massachusetts") {
-          const rawPrompt = req.body.prompt.substring(0,210).trim();
+          const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
           const tweetText = `>> Some Celtics-loving trashbag from ${city} (a shithole) said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
@@ -201,7 +205,7 @@ app.post('/', async (req, res) => {
           }
 
           
-          const rawPrompt = req.body.prompt.substring(0,210).trim();
+          const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
           const tweetText = `>> Someone from ${city}, ${state} said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
@@ -223,7 +227,7 @@ app.post('/', async (req, res) => {
           });
 
         } else {
-          const rawPrompt = req.body.prompt.substring(0,210).trim();
+          const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
           const tweetText = `>> Someone from ${city}, ${state} said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
