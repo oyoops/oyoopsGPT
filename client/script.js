@@ -131,7 +131,7 @@ const handleSubmit = async (e) => {
       prefix: switchIQ,
       prompt: data.get('prompt')
     })
-  })
+  });
 
   //
   // If script has reached this point,

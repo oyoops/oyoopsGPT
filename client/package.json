@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "dd-trace": "^3.9.3",
-    "jsdom": "^21.0.0",
     "winston": "^3.8.2"
   }
 }
