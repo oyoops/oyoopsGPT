@@ -309,7 +309,7 @@ console.log("Auth v2 = Attemped via bearer...");
 
 async function startStream(userName){
   try {
-    const stream = await bClient.v2.searchStream(autoConnect = true);
+    const stream = await bClient.v2.searchStream(autoReconnect = true);
     
     // delete all existing rules
     const rules = await getAllRules();
