@@ -7,8 +7,8 @@ import Twit from 'twit'
 //import * as Twitter from 'twitter-api-v2'
 import { ETwitterStreamEvent, TweetStream, TwitterApi, ETwitterApiError } from 'twitter-api-v2';
 import needle from 'needle' //HTTP client for twitter
-import got from 'got' //for oauth2 with user contexts
-import * as oauth from 'oauth-1.0a' //for oauth2 with user contexts
+//import got from 'got' //for oauth2 with user contexts
+//import * as oauth from 'oauth-1.0a' //for oauth2 with user contexts
 //// OpemAI, chatGPT, and DALL-E:
 import { Configuration, OpenAIApi } from 'openai'
 //import { variations } from 'dalle'
@@ -17,9 +17,9 @@ import { Configuration, OpenAIApi } from 'openai'
 import path from 'path'
 import axios from 'axios'
 import useragent from 'express-useragent'
-import multer from 'multer'
-import { send } from 'process'
-import { COLLECTION_FORMATS } from 'openai/dist/base';
+//import multer from 'multer'
+//import { send } from 'process'
+//import { COLLECTION_FORMATS } from 'openai/dist/base';
 
 const DEBUG_MODE = false;
 dotenv.config()
