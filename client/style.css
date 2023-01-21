@@ -153,21 +153,3 @@ form img {
   width: 30px;
   height: 30px;
 }
-
-input[type=checkbox] {
-  display:none;
-}
-
-input[type=checkbox] + label:before {
-  content: "65";
-  padding: 5px;
-  background: #db4e36;
-  display: inline-block;
-  border-radius: 5px;
-  color: #fff;
-}
-
-input[type=checkbox]:checked + label:before {
-  content: "150";
-  background: #29a133;
-}

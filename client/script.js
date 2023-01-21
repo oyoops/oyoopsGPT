@@ -6,7 +6,7 @@ const DEBUG_MODE = false;
 // get objects from DOM
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
-const switchIQ = document.querySelector('switch').value;
+var switchIQ = document.querySelector('switch');
 
 let loadInterval;
 
@@ -110,7 +110,7 @@ const handleSubmit = async (e) => {
 
   // (optional: prompt prefix to modify AI response unbeknownst to user client)
   let promptPrefix;
-  promptPrefix = 'Pretend to be a person with IQ of ' + switchIQ + ". ";
+  promptPrefix = '';
 
   // debug mode?
   let myURLandPort;
