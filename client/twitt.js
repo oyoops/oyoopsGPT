@@ -3,6 +3,7 @@ import cron from 'node-cron';
 import * as dotenv from 'dotenv';
 
 dotenv.config()
+
 const client = new TwitterApi({
   consumer_key: process.env.TWITTER_APP_API_KEY_2,
   consumer_secret: process.env.TWITTER_APP_API_SECRET_KEY_2,
@@ -24,6 +25,6 @@ const tweet = async () => {
     } catch (e) {
         console.error(e);
     }
-}
+};
   
 cron.schedule('* * * * *', tweet);
