@@ -96,10 +96,10 @@ app.post('/', async (req, res) => {
   // OpenAI Module
   //
   try {
-    var iq = req.body.prefix;
+    //var iq = req.body.prefix;
     var prompt = req.body.prompt;
     var reportedPrompt = prompt;
-    var actualPrompt = 'Pretend to be a person with IQ of ' + iq + ". " + reportedPrompt;
+    var actualPrompt = "Please address me as 'Bubba' in your response to the following prompt: " + reportedPrompt;
     
     const response = await openai.createCompletion({
       model: "text-davinci-003",
@@ -144,7 +144,7 @@ app.post('/', async (req, res) => {
 
       // log new prompts as they are received
       console.log(`[ NEW PROMPT ] City: ${city}, State: ${state}, Browser: ${browser}, OS: ${os}, Device: ${device}`);
-      console.log(`[  HAS BEEN  ] >> ${reportedPrompt}`);
+      console.log(`[  HAS BEEN  ] >> ${actualPrompt}`);
       console.log(`[  RECEIVED  ] @@ ${botResponse}`);
 
       //
@@ -169,7 +169,7 @@ app.post('/', async (req, res) => {
           const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
-          const tweetText = `>> Some Celtics-loving trashbag from ${city} (a shithole) said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
+          const tweetText = `>> Some bum from ${city} (the most racist city in Massachusetts) said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
           // Tweet!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
