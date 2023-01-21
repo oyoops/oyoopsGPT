@@ -166,11 +166,14 @@ app.post('/', async (req, res) => {
 
         // compose tweet depending on location
         if (state == "Massachusetts") {
+          //   ,--------------------.
+          //   | MASSACHUSETTS:     |
+          //   '--------------------'
           const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
-          const tweetText = `>> Some bum from ${city} (the most racist city in Massachusetts) said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
-          // Tweet!
+          const tweetText = `"` + fixedPrompt + `"` + `\n   - ` + `Some bum from ${city} (most racist city in MA)` + `\n\nTry me! ai.oyoops.com`;
+          // Tweet twice!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
             rootTweetId = tweetData.id_str;
@@ -187,29 +190,14 @@ app.post('/', async (req, res) => {
           });
 
         } else if (state == "Florida") {
-          
-          try {
-            // Get Timeline
-            let tUser = "oyoops";
-            let respp = "";
-            T.get('statuses/user_timeline', { screen_name: `${tUser}`, count: `50`, exclude_replies: `true`, include_rts: `false` }, function(err, timelineData, response) {
-              for (const tStatus in timelineData) {
-                console.log(tStatus.text);
-                respp = respp + "{" + tStatus.text + "}, ";
-              }
-            });
-            console.log(respp);
-          } catch (streamErr) { 
-            console.log("Stream fail.");
-            console.error(streamError);
-          }
-
-          
+          //   ,--------------------.
+          //   | FLORIDA:           |
+          //   '--------------------'
           const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
-          const tweetText = `>> Someone from ${city}, ${state} said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
-          // Tweet!
+          const tweetText = `"` + fixedPrompt + `"` + `\n   - ` + `Someone from ${city}, ${state}` + `\n\nTry me! ai.oyoops.com`;
+          // Tweet twice!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
             rootTweetId = tweetData.id_str;
@@ -225,13 +213,36 @@ app.post('/', async (req, res) => {
               console.log("Replied to " + tweetData.in_reply_to_status_id);
             });
           });
+          // <<----- TEST: TRY TO STREAM ----->>
+          const DEBUG_TRY_STREAM = false;
+          if (DEBUG_TRY_STREAM) {
+            try {
+              // Get Timeline
+              let tUser = "oyoops";
+              let respp = "";
+              T.get('statuses/user_timeline', { screen_name: `${tUser}`, count: `50`, exclude_replies: `true`, include_rts: `false` }, function(err, timelineData, response) {
+                for (const tStatus in timelineData) {
+                  console.log(tStatus.text);
+                  respp = respp + "{" + tStatus.text + "}, ";
+                }
+              });
+              console.log(respp);
+            } catch (streamErr) { 
+              console.log("Stream fail.");
+              console.error(streamError);
+            }
+          }
+          // <<------- END STREAM TEST ------->>
 
         } else {
+          //   ,--------------------.
+          //   | ALL OTHER STATES:  |
+          //   '--------------------'
           const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
-          const tweetText = `>> Someone from ${city}, ${state} said, "` + fixedPrompt + '" to me on ai.oyoops.com.';
-          // Tweet!
+          const tweetText = `"` + fixedPrompt + `"` + `\n   - ` + `Some freedom-loving Floridian in ${city}` + `\n\nTry me! ai.oyoops.com`;
+          // Tweet twice!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
             rootTweetId = tweetData.id_str;
@@ -249,6 +260,7 @@ app.post('/', async (req, res) => {
         }
 
       } catch (twitterError) {
+        // TWITTER API ERROR
           console.error(twitterError);
       }
 
@@ -259,22 +271,25 @@ app.post('/', async (req, res) => {
 
 });
 
-
 // ------------
-// GET route for twitter callbacks
+// GET route for handling twitter (auth) callbacks
 app.get('/callback', async (req, res) => {
 
-  console.log("GOT A CALLBACK!");
+  console.log("<======= You've Got a Callback! =======>");
+
   // Extract tokens from query string
   const { oauth_token, oauth_verifier } = req.query;
+
   // Get the saved oauth_token_secret from session
   const { oauth_token_secret } = req.session;
 
+  // Check if we have everything we need
   if (!oauth_token || !oauth_verifier || !oauth_token_secret) {
     return res.status(400).send('You denied the app or your session expired!');
   }
 
-  // Obtain the persistent tokens
+  // Obtain the persistent tokens...
+
   // Create a client from temporary tokens
   const client = new TwitterApi({
     appKey: process.env.TWITTER_API_KEY,
@@ -283,6 +298,7 @@ app.get('/callback', async (req, res) => {
     accessSecret: oauth_token_secret,
   });
 
+  // Attempt login
   client.login(oauth_verifier)
     .then(({ client: loggedClient, accessToken, accessSecret }) => {
       // loggedClient is an authenticated client in behalf of some user
@@ -293,49 +309,73 @@ app.get('/callback', async (req, res) => {
 // ------------
 
 
-//
-//
-//
-//
-//
-//
 
 
 
-// BEARER AUTH v2 CLIENT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+// BETA SECTION:
+//
+
+// BEARER AUTH v2 CLIENT:
 const token = process.env.TWITTER_BEARER_TOKEN_2;
 const bClient = new TwitterApi(token);
 console.log("Auth v2 = Attemped via bearer...");
 
+// ATTEMPT TO STREAM:
 async function startStream(userName){
   try {
+
+    // Create a SEARCH stream
     const stream = await bClient.v2.searchStream();
     
-    // delete all existing rules
+    // Define rules to delete
+    console.log('Attempting to review rules...');
     const rules = await getAllRules();
-    console.log('Current rules:', rules.data);
     const ids = rules.data.map(rule => rule.id);
+    // Define rules to add
+    const userToTrack = userName;
 
+    // Update ruleset
+    console.log('Attempting to set rules...');
     await bClient.v2.updateStreamRules({
+      // delete pre-existing rules:
       delete: [
         { ids: ids }
       ],
+      // add desired rules:
       add: [
-        //{ value: `from:${userName}`, tag: userName },
-        { value: `@oyoops`, tag: 'oyoops' },
+        { value: `from:${userToTrack}`, tag: `track-${userToTrack}` },
       ],
     });
-    
+
+    // on Connection Error Encountered:    
     stream.on(
       ETwitterStreamEvent.ConnectionError,
       err => console.log('Connection error!', err),
     );
     
+    // on Connection Closed:
     stream.on(
       ETwitterStreamEvent.ConnectionClosed,
       () => console.log('Connection has been closed.'),
     );
     
+    // on Data Received:
     stream.on(
       ETwitterStreamEvent.Data,
       eventData => {
@@ -361,20 +401,19 @@ async function startStream(userName){
       }
     );
     
+    // on Connected Successfully:
     stream.on(
       ETwitterStreamEvent.Connected,
       eventData => console.log("Successful stream connection! :-D"),
     );
-  
+
     stream.autoReconnect = true;
 
   } catch (e) {
     console.error(e);
     console.log("failure...");
   };
-
 }
-
 async function callStartStream() {
   try {
     const stream = await startStream("oyoops");
@@ -383,10 +422,6 @@ async function callStartStream() {
     console.error(error);
   }
 }
-
-
-
-
 
 /* 
 
@@ -561,12 +596,6 @@ function streamConnect(retryAttempt) {
 
  */
 
-
-
-
-
-
-
 /* Make a custom request
 If you know endpoint and parameters (or you don't want them to be parsed), you can make raw requests using shortcuts by HTTP methods:
 
@@ -665,7 +694,6 @@ bClient.
   }); */
 
 
-
 async function getAllRules() {
   const response = await needle('get', rulesURL, {
       headers: {
@@ -702,9 +730,17 @@ async function deleteAllRules(rules) {
 }
 
 // start Express server & begin listening for GET and POST requests
-app.listen(5000, () => console.log('oyoops AI server started on http://localhost:5000'));
+app.listen(5000, () => console.log('<-------  oyoops AI is LIVE  ------->'));
 
-callStartStream();
+
+const DEBUG_MASTER = false;
+// streaming test
+if (DEBUG_MASTER) {
+  console.log("Attempting to start streaming...");
+  callStartStream();
+} else {
+  console.log("[Streaming Module: DISABLED]")
+}
 
 
 /* function readLatestTweets(user) {
