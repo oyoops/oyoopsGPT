@@ -6,10 +6,7 @@ const DEBUG_MODE = false;
 // get objects from DOM
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
-<<<<<<< HEAD
 const switchIQ = document.querySelector('switch').value;
-=======
->>>>>>> parent of 490fa1e... The fourth test of brain
 
 let loadInterval;
 
@@ -113,7 +110,7 @@ const handleSubmit = async (e) => {
 
   // (optional: prompt prefix to modify AI response unbeknownst to user client)
   let promptPrefix;
-  promptPrefix = '';
+  promptPrefix = 'Pretend to be a person with IQ of ' + switchIQ + ". ";
 
   // debug mode?
   let myURLandPort;
