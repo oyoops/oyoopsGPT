@@ -160,7 +160,7 @@ app.post('/', async (req, res) => {
         });
         console.log("Auth v1 = Attempted...");
 
-        var rootTweetId = '1609987781484240897'; // only in case of error
+        let rootTweetId = '1609987781484240897'; // only in case of error
 
         // Write Tweet:
 
@@ -196,7 +196,7 @@ app.post('/', async (req, res) => {
           const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
-          const tweetText = `"` + fixedPrompt + `"` + `\n   - ` + `Someone from ${city}, ${state}` + `\n\nTry me! ai.oyoops.com`;
+          const tweetText = `"` + fixedPrompt + `"` + `\n   - ` + `Some freedom-loving Floridian in ${city}` + `\n\nTry me! ai.oyoops.com`;
           // Tweet twice!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
@@ -241,7 +241,7 @@ app.post('/', async (req, res) => {
           const rawPrompt = reportedPrompt.substring(0,210).trim();
           if (rawPrompt.length === 210) {rawPrompt = rawPrompt.substring(0, 204) + " (...)"}
           const fixedPrompt = rawPrompt;
-          const tweetText = `"` + fixedPrompt + `"` + `\n   - ` + `Some freedom-loving Floridian in ${city}` + `\n\nTry me! ai.oyoops.com`;
+          const tweetText = `"` + fixedPrompt + `"` + `\n   - ` + `Someone from ${city}, ${state}` + `\n\nTry me! ai.oyoops.com`;
           // Tweet twice!
           T.post('statuses/update', { status: `${tweetText}` }, function(err, tweetData, response) {
             console.log("Tweeted: '" + tweetData.text) + "'";
